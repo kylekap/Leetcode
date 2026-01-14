@@ -22,7 +22,7 @@ class Solution:
                     return i, nums.index(diff)
         return None
 
-    def addTwoNumbers(self, l1: ListNode | None, l2: ListNode | None) -> ListNode | None:  # noqa: N802
+    def addTwoNumbers(self, l1: ListNode | None, l2: ListNode | None) -> ListNode | None:
         """LeetCode #2: Add Two Numbers.
 
         You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
@@ -46,7 +46,7 @@ class Solution:
             l2 = l2.next if l2 else None
         return answer_node.next
 
-    def lengthOfLongestSubstring(self, s: str) -> int:  # noqa: N802
+    def lengthOfLongestSubstring(self, s: str) -> int:
         """LeetCode #3: Longest Substring Without Repeating Characters.
 
         Given a string s, find the length of the longest substring without repeating characters.
@@ -63,7 +63,7 @@ class Solution:
             used[c] = i
         return max_len
 
-    def findMedianSortedArrays(self, nums1: list[int], nums2: list[int]) -> float:  # noqa: N802
+    def findMedianSortedArrays(self, nums1: list[int], nums2: list[int]) -> float:
         """LeetCode #4: Median of Two Sorted Arrays.
 
         Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
@@ -76,7 +76,7 @@ class Solution:
             return (new[arr_size//2-1] + new[arr_size//2]) / 2
         return new[arr_size//2]
 
-    def longestPalindrome(self, s: str) -> str:  # noqa: N802
+    def longestPalindrome(self, s: str) -> str:
         """LeetCode #5: Longest Palindromic Substring.
 
         Given a string s, return the longest palindromic substring in s.
@@ -130,7 +130,7 @@ class Solution:
             return 0
         return val
 
-    def myAtoi(self, s: str) -> int:  # noqa: C901, N802 # Ignoring complexity (inner functions)
+    def myAtoi(self, s: str) -> int:  # noqa: C901 # Ignoring complexity (inner functions)
         """LeetCode #8: String to Integer (atoi).
 
         Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer.
@@ -185,14 +185,14 @@ class Solution:
         val = _build_number(s)
         return _check_valid(val)
 
-    def isPalindrome(self, x: int) -> bool:  # noqa: N802
+    def isPalindrome(self, x: int) -> bool:
         """LeetCode #9: Palindrome Number.
 
         Given an integer x, return true if x is a palindrome, and false otherwise.
         """
         return str(x) == str(x)[::-1] # use strings, if int you can get a - and causes issues.
 
-    def isMatch(self, s: str, p: str) -> bool:  # noqa: N802
+    def isMatch(self, s: str, p: str) -> bool:
         """LeetCode #10: Regular Expression Matching.
 
         Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
@@ -202,7 +202,7 @@ class Solution:
         """
         return bool(re.match("^" + p + "$", s))
 
-    def maxArea(self, height: list[int]) -> int:  # noqa: N802
+    def maxArea(self, height: list[int]) -> int:
         """LeetCode #11: Container With Most Water.
 
         You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
@@ -224,4 +224,33 @@ class Solution:
                 p1+=1
         return max_vol
 
+    def intToRoman(self, num: int) -> str:
+        """LeetCode #12: Integer to Roman.
 
+        Given an integer, convert it to a roman numeral.
+        """
+        roman_numerals = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000,
+        "IV": 4, "IX": 9, "XL": 40,"XC": 90, "CD": 400, "CM": 900}
+        roman = ""
+        for letter, value in dict(sorted(roman_numerals.items(), key=lambda item: item[1], reverse=True)).items():
+            while num >= value:
+                num -= value
+                roman += letter
+        return roman
+
+    def romanToInt(self, s: str) -> int:
+        """LeetCode #13: Roman to Integer.
+
+        Given a roman numeral, convert it to an integer.
+        """
+        roman_numerals = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000,
+        "IV": 4, "IX": 9, "XL": 40, "XC": 90, "CD": 400, "CM": 900}
+
+        li = [roman_numerals[x] for x in s]
+        tot = 0
+        for i in range(len(li)):
+            if i < len(li) - 1 and li[i] < li[i + 1]:
+                tot -= li[i]
+            else:
+                tot += li[i]
+        return tot

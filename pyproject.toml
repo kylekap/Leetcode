@@ -71,4 +71,5 @@ ignore = [
     "E501", # Avoid enforcing line-length violations (`E501`)
     "S101", # Assert is only used in the testing modules
     "T201", # I'm gunna print sometimes, you gotta live with it
+    "N802", # Leetcode is making me by the way they name their problems. I don't like it.
     ]

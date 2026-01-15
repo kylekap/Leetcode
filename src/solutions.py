@@ -267,6 +267,46 @@ class Solution:
                 prefix = prefix[:-1]
         return prefix
 
+    def threeSum(self, nums: list[int]) -> list[list[int]]:
+        """LeetCode #15: 3Sum.
+
+        Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+        """
+        solutions = []
+        nums.sort() # Get it in order so the pointers work
+
+        for i in range(len(nums)-2):
+            if nums[i] > 0 or nums[-1] < 0: # No need to look further (all are - or all are +)
+                break
+            if i > 0 and nums[i] == nums[i-1]: # You're looking at the same as the last one, move on
+                continue
+
+            # Initialize the left & right pointers
+            left_point = i+1
+            right_point = len(nums)-1
+
+            while left_point < right_point:
+                sum_val = nums[i] + nums[left_point] + nums[right_point]
+
+                if sum_val > 0: # Too big, move to smaller numbers
+                    right_point -= 1
+                elif sum_val < 0: # Too small, move to bigger numbers
+                    left_point += 1
+                else: # Found a solution!
+                    solutions.append([nums[i], nums[left_point], nums[right_point]])
+
+                    # Move both so you don't repeat
+                    left_point += 1
+                    right_point -= 1
+
+                    while left_point < right_point:
+                        if nums[left_point-1] == nums[left_point]: # If same as the last one, keep going
+                            left_point += 1
+                        elif nums[right_point+1] == nums[right_point]: # if same as the last one, keep going
+                            right_point -= 1
+                        else: # Not a duplicate
+                            break
+        return solutions
 
 if __name__ == "__main__":
     sol = Solution()

@@ -254,3 +254,19 @@ class Solution:
             else:
                 tot += li[i]
         return tot
+
+    def longestCommonPrefix(self, strs: list[str]) -> str:
+        """LeetCode #14: Longest Common Prefix.
+
+        Write a function to find the longest common prefix string amongst an array of strings.
+        If there is no common prefix, return an empty string "".
+        """
+        prefix = strs[0]
+        for i in range(1, len(strs)):
+            while strs[i].find(prefix) != 0:
+                prefix = prefix[:-1]
+        return prefix
+
+
+if __name__ == "__main__":
+    sol = Solution()

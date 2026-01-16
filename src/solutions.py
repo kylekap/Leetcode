@@ -459,5 +459,32 @@ class Solution:
                 return False #Checker was blank OR the character didn't have the right closing
         return checker == "" # If you have un-finished items will return False, otherwise True.
 
+    def mergeTwoLists(self, list1: [ListNode] | None, list2: [ListNode] | None) -> [ListNode] | None:
+        """LeetCode #21: Merge Two Sorted Lists.
+
+        You are given the heads of two sorted linked lists list1 and list2.
+        Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.
+        Return the head of the merged linked list.
+        """
+        base = ListNode()
+        current_node = base
+
+        if list1 is None or list2 is None: # If a list is blank, return the one that isn't
+            return list1 or list2
+
+        while list1 or list2: #While either list has something, keep going
+            digit1 = list1.val if list1 else 101 #101 is outside range
+            digit2 = list2.val if list2 else 101 #101 is outside range
+
+            if digit1 <= digit2: # Take from list1 when matched, or it's less
+                current_node.next = ListNode(digit1)
+                list1 = list1.next if list1 else None
+            elif digit2 < digit1: # If list2 is lower, take it
+                current_node.next = ListNode(digit2)
+                list2 = list2.next if list2 else None
+            current_node = current_node.next
+        return base.next
+
+
 if __name__ == "__main__":
     sol = Solution()

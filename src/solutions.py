@@ -308,5 +308,45 @@ class Solution:
                             break
         return solutions
 
+    def threeSumClosest(self, nums: list[int], target: int) -> int:
+        """LeetCode #16: 3Sum Closest.
+
+        Given an integer array nums of length n and an integer target, find three integers in nums such that the sum is closest to target.
+        """
+        solution = -10_000_000 # Set to a really low number so the first one wins
+        nums.sort() # Get it in order so the pointers work
+
+        if sum(nums[:3]) > target: # You ain't gunna hit it, your list is too big
+            return sum(nums[:3])
+        if sum(nums[-3:]) < target: # You ain't gunna hit it, your list is too small
+            return sum(nums[-3:])
+        if len(nums) == 3: # You only got 3, and I gotta add 3, so..  # noqa: PLR2004
+            return sum(nums)
+
+        for i in range(len(nums)-2): # Fine, we'll do the logic
+            if i > 0 and nums[i] == nums[i-1]: # You're looking at the same as the last one, move on
+                continue
+
+            # Initialize the left & right pointers
+            left_point = i+1
+            right_point = len(nums)-1
+
+            while left_point < right_point:
+                sum_val = nums[i] + nums[left_point] + nums[right_point]
+
+                diff = target - sum_val
+
+                if abs(diff) < abs(target - solution):
+                    solution = sum_val
+
+                if diff < 0: # Too big, move to smaller numbers
+                    right_point -= 1
+                elif diff > 0: # Too small, move to bigger numbers
+                    left_point += 1
+                else: # Found a solution!
+                    break
+
+        return solution
+
 if __name__ == "__main__":
     sol = Solution()

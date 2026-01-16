@@ -434,5 +434,30 @@ class Solution:
 
         return base.next
 
+    def isValid(self, s: str) -> bool:
+        """LeetCode #20: Valid Parentheses.
+
+        Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+        """
+        checker = ""
+
+        valid = {
+            "(":")",
+            "[":"]",
+            "{":"}",
+            "]":None,
+            "}":None,
+            ")":None,
+        }
+
+        for ch in s:
+            if ch in "({[": # You're building up the amount you need to close
+                checker+=ch
+            elif len(checker) > 0 and ch == valid.get(checker[-1]): # Check you had an open & have the right close
+                checker=checker[:-1] #You matched an open & close, remove the open from checker.
+            else:
+                return False #Checker was blank OR the character didn't have the right closing
+        return checker == "" # If you have un-finished items will return False, otherwise True.
+
 if __name__ == "__main__":
     sol = Solution()

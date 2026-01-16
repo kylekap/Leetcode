@@ -364,6 +364,8 @@ class Solution:
         li = [phone.get(number) for number in digits] # Get the letters for each digit
         return ["".join(str(item) for item in combo) for combo in itertools.product(*li)] # Generate cartesian product, then join all the touples to strings
 
+    def fourSum(self, nums: list[int], target: int) -> list[list[int]]:
+        return None
 
 if __name__ == "__main__":
     sol = Solution()

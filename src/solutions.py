@@ -364,8 +364,75 @@ class Solution:
         li = [phone.get(number) for number in digits] # Get the letters for each digit
         return ["".join(str(item) for item in combo) for combo in itertools.product(*li)] # Generate cartesian product, then join all the touples to strings
 
-    def fourSum(self, nums: list[int], target: int) -> list[list[int]]:
-        return None
+    def fourSum(self, nums: list[int], target: int) -> list[list[int]]:  # noqa: C901, PLR0912
+        """LeetCode #18: 4Sum.
+
+        Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+        0 <= a, b, c, d < n
+        a, b, c, and d are distinct.
+        nums[a] + nums[b] + nums[c] + nums[d] == target
+        """
+        solutions = []
+        nums.sort() # Get it in order so the pointers work
+        if len(nums) < 4:  # noqa: PLR2004
+            return solutions
+
+        for i in range(len(nums)-3): # You've got 3 right of it
+            if i > 0 and nums[i] == nums[i-1]: # You're looking at the same as the last one, move on
+                continue
+
+            for j in range(i + 1, len(nums) - 2): # You've got 2 right of it
+                if j > i + 1 and nums[j] == nums [j-1]: # You're looking at the same as the last one, move on
+                    continue
+
+                # Initialize the left & right pointers
+                left_point = j+1
+                right_point = len(nums)-1
+
+                while left_point < right_point:
+                    sum_val = nums[i] + nums[j] + nums[left_point] + nums[right_point]
+
+                    if sum_val > target: # Too big, move to smaller numbers
+                        right_point -= 1
+                    elif sum_val < target: # Too small, move to bigger numbers
+                        left_point += 1
+                    else: # Found a solution!
+                        solutions.append([nums[i], nums[j], nums[left_point], nums[right_point]])
+
+                        # Move both so you don't repeat
+                        left_point += 1
+                        right_point -= 1
+
+                        while left_point < right_point:
+                            if nums[left_point-1] == nums[left_point]: # If same as the last one, keep going
+                                left_point += 1
+                            elif right_point != len(nums)-1 and nums[right_point+1] == nums[right_point]: # if same as the last one, keep going
+                                right_point -= 1
+                            else: # Not a duplicate
+                                break
+        return solutions
+
+    def removeNthFromEnd(self, head: [ListNode] | None, n: int) -> [ListNode] | None:
+        """LeetCode #19: Remove Nth Node From End of List.
+
+        Given the head of a linked list, remove the nth node from the end of the list and return its head.
+        """
+        base = ListNode() # Create a base
+        base.next = head # Set the base that the pointers will traverse, starting at the head
+
+        lead_point = base # Start at the base
+        follow_point = base # Start at the base
+
+        for _ in range(n): # Create the gap
+            lead_point = lead_point.next
+
+        while lead_point.next: #Move until you hit the end
+            follow_point = follow_point.next
+            lead_point = lead_point.next
+
+        follow_point.next = follow_point.next.next # Since we stepped lead ahead, now follow is at the one to skip. Next.next.
+
+        return base.next
 
 if __name__ == "__main__":
     sol = Solution()

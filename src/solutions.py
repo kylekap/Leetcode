@@ -485,6 +485,27 @@ class Solution:
             current_node = current_node.next
         return base.next
 
+    def generateParenthesis(self, n: int) -> list[str]:
+        """LeetCode #22: Generate Parentheses.
+
+        Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+        """
+        def backtrack(open_paren, close_paren, curr):
+            if open_paren < close_paren or open_paren > n or close_paren > n: # If it's not valid, move on
+                return
+
+            if open_paren == n and close_paren == n: # It's valid and the length is correct
+                answer.append(curr)
+                return
+
+            if open_paren < n: # Try adding a left parenthesis
+                backtrack(open_paren + 1, close_paren, curr + "(")
+            if close_paren < open_paren: # Try adding a right parenthesis
+                backtrack(open_paren, close_paren + 1, curr + ")")
+
+        answer = []
+        backtrack(0, 0, "") # Start the backtracking, populates answer
+        return answer
 
 if __name__ == "__main__":
     sol = Solution()

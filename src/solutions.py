@@ -534,5 +534,77 @@ class Solution:
 
         return base.next
 
+    def swapPairs(self, head: [ListNode] | None) -> [ListNode] | None:
+        """LeetCode #24: Swap Nodes in Pairs.
+
+        Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+        """
+        base = ListNode()
+        current_node = base
+
+        if head is None:
+            return head
+
+        while head: #While list has something, keep going
+            digit1 = head.val if head is not None else None #Get first one to swap
+            digit2 = head.next.val if head.next is not None else None # Get second one to swap
+
+            if digit1 is not None and digit2 is not None: # If both digits exist, swap
+                current_node.next = ListNode(digit2)
+                current_node = current_node.next
+                current_node.next = ListNode(digit1)
+                current_node = current_node.next
+
+            elif digit1 is not None: # If only 1 exists, keep it
+                current_node.next = ListNode(digit1)
+                current_node = current_node.next
+            elif digit2 is not None: # If only 2 exists, keep it
+                current_node.next = ListNode(digit2)
+                current_node = current_node.next
+
+            head = head.next if head else None # Advance
+            head = head.next if head else None # Advance again
+
+        return base.next
+
+    def reverseKGroup(self, head: [ListNode] | None, k: int) -> [ListNode] | None:
+        """LeetCode #25: Reverse Nodes in k-Group.
+
+        Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+        k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+
+        You may not alter the values in the list's nodes, only nodes themselves may be changed.
+        """
+        base = ListNode()
+        current_node = base
+
+        if head is None:
+            return head
+
+        while head: #While list has something, keep going
+            digit = []
+            for _ in range(k): # Get k number of elements
+                h = head.val if head is not None else None
+                if h is not None:
+                    digit.append(h) # Add to list
+                head = head.next if head else None # Advance
+
+
+            if len(digit) != k: # If we don't have k elements, break!
+                for ea in digit: # Add the ones we have that don't make a full group
+                    current_node.next = ListNode(ea)
+                    current_node = current_node.next
+                break
+
+
+            for ea in digit[::-1]: # Add in reverse
+                current_node.next = ListNode(ea)
+                current_node = current_node.next
+
+        return base.next
+
+
+
+
 if __name__ == "__main__":
     sol = Solution()

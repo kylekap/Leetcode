@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import heapq
 import itertools
 import re
 
@@ -506,6 +507,32 @@ class Solution:
         answer = []
         backtrack(0, 0, "") # Start the backtracking, populates answer
         return answer
+
+    def mergeKLists(self, lists: list[[ListNode] | None]) -> [ListNode] | None:
+        """LeetCode #23: Merge k Sorted Lists.
+
+        You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+        Merge all the linked-lists into one sorted linked-list and return it.
+        """
+        pq = []
+
+        for i, li in enumerate(lists):
+            head = li
+            if head is not None:
+                heapq.heappush(pq, (head.val, i, head))
+
+        base = ListNode()
+        current_node = base
+
+        while pq:
+            _, index, top = heapq.heappop(pq)
+            current_node.next = top
+            current_node = top
+
+            if top.next is not None:
+                heapq.heappush(pq, (top.next.val, index, top.next))
+
+        return base.next
 
 if __name__ == "__main__":
     sol = Solution()

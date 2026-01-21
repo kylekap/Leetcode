@@ -641,6 +641,58 @@ class Solution:
 
         return point # Return the new length
 
+    def strStr(self, haystack: str, needle: str) -> int:
+        """LeetCode #28: Find the Index of the First Occurrence in a String.
+
+        Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+        """
+        if needle in haystack:
+            return haystack.index(needle)
+        return -1
+
+    def divide(self, dividend: int, divisor: int) -> int:
+        """LeetCode #29: Divide Two Integers.
+
+        Given two integers dividend and divisor, divide two integers without using multiplication, division, and mod operator.
+        The integer division should truncate toward zero, which means losing its fractional part. For example, 8.345 would be truncated to 8, and -2.7335 would be truncated to -2.
+        Return the quotient after dividing dividend by divisor.
+        Note: Assume we are dealing with an environment that could only store integers within the 32-bit signed integer range: [-2**31, 2**31 - 1].
+        For this problem, if the quotient is strictly greater than 2**31 - 1, then return 2**31 - 1, and if the quotient is strictly less than -2**31, then return -2**31.
+        """
+        def limit_check(i):
+            min_int = -2**31
+            max_int = -min_int-1
+            if i < min_int:
+                return min_int
+            if i > max_int:
+                return max_int
+            return i
+
+        ans = 0
+        sign_pos = (dividend > 0 and divisor > 0) or (dividend < 0 and divisor < 0)
+
+        # Negative bigger range, so convert
+        a = -dividend if dividend > 0 else dividend
+        b = -divisor if divisor > 0 else divisor
+
+
+        if dividend == 0: # Special case
+            return 0
+        if abs(divisor) == 1: # Divide by 1 returns original number, sign adjusted
+            return limit_check(abs(dividend)) if sign_pos else limit_check(-abs(dividend))
+
+        while a <= b:
+            x = b
+            ct = 1
+            while x >=(-(2**30)) and a <= (x<<1): # Shift the divisor until it exceeds dividend, up until overflow
+                x <<=1 # Doubling it
+                ct <<=1 # Double the count
+            a -= x
+            ans +=ct
+
+        return limit_check(ans) if sign_pos else limit_check(-ans) # Return sign adjusted number
+
+
 
 if __name__ == "__main__":
     sol = Solution()

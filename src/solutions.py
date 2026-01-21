@@ -3,6 +3,7 @@ from __future__ import annotations
 import heapq
 import itertools
 import re
+from collections import Counter
 
 import util
 from util import ListNode
@@ -691,6 +692,24 @@ class Solution:
             ans +=ct
 
         return limit_check(ans) if sign_pos else limit_check(-ans) # Return sign adjusted number
+
+    def findSubstring(self, s: str, words: list[str]) -> list[int]:
+        """LeetCode #30: Substring with Concatenation of All Words.
+
+        You are given a string s and an array of strings words. All the strings of words are of the same length.
+        A concatenated string is a string that exactly contains all the strings of any permutation of words concatenated.
+
+        Return an array of the starting indices of all the concatenated substrings in s. You may return the answer in any order.
+        """
+
+        def split_string_evenly(s, size): # Split string evenly into a list of substrings of len size
+            return [s[i:i + size] for i in range(0, len(s), size)]
+
+        word_ct = len(words)
+        word_len = len(words[0])
+        # Loop through all possible substrings, checking if they contain all words.
+        # To check they contain all words, split the string evenly into substrings of the same length & compare against the given word list
+        return [i for i in range(len(s) - word_ct * word_len + 1) if sorted(split_string_evenly(s[i:i + word_ct * word_len], word_len)) == sorted(words)]
 
 
 

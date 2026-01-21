@@ -620,6 +620,27 @@ class Solution:
 
         return point+1 # Return the new length
 
+    def removeElement(self, nums: list[int], val: int) -> int:
+        """LeetCode #27: Remove Element.
+
+        Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. The relative order of the elements may be changed.
+        Then return the number of elements in nums which are not equal to val.
+        Consider the number of elements in nums which are not equal to val being k, to get accepted, you need to do the following things:
+         - Change the array nums such that the first k elements of nums contain the elements which are not equal to val. The remaining elements of nums are not important as well as the size of nums.
+         - Return k.
+        """
+        if not nums: # If the list is empty, there's nothing to do
+            return 0
+
+        point = 0 # Pointer to keep track of last placed element
+
+        for ea in nums: # Go through the list
+            if ea != val: # If it's not the bad value, add
+                nums[point] = ea # Add
+                point+=1 # Advance
+
+        return point # Return the new length
+
 
 if __name__ == "__main__":
     sol = Solution()

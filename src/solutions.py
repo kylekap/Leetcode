@@ -603,7 +603,22 @@ class Solution:
 
         return base.next
 
+    def removeDuplicates(self, nums: list[int]) -> int:
+        """LeetCode #26: Remove Duplicates from Sorted Array.
 
+        Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same.
+        """
+        if not nums: # If the list is empty, there's nothing to do
+            return 0
+
+        point = 0 # Pointer to keep track of last placed element
+
+        for val in nums[1:]: # Go through the list
+            if val != nums[point]: # If it's new, add
+                point+=1
+                nums[point] = val
+
+        return point+1 # Return the new length
 
 
 if __name__ == "__main__":

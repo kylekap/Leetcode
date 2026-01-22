@@ -3,7 +3,6 @@ from __future__ import annotations
 import heapq
 import itertools
 import re
-from collections import Counter
 
 import util
 from util import ListNode

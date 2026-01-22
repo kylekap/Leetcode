@@ -8,7 +8,7 @@ class Solution:
         """[summary]."""
 
 
-    def problem2(self):
+    def problem(self):
         """[summary]."""
 
 

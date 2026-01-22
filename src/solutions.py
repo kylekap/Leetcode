@@ -710,6 +710,36 @@ class Solution:
         # To check they contain all words, split the string evenly into substrings of the same length & compare against the given word list
         return [i for i in range(len(s) - word_ct * word_len + 1) if sorted(split_string_evenly(s[i:i + word_ct * word_len], word_len)) == sorted(words)]
 
+    def nextPermutation(self, nums: list[int]) -> None:
+        """LeetCode #31: Next Permutation.
+
+        A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+
+        For example, for arr = [1,2,3], the following are considered permutations: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], and [3,2,1].
+        The next permutation of an array of integers is the next lexicographically greater permutation of its integer.
+        More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container.
+        If such an arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+        Given an array of integers nums, find the next permutation of nums.
+        The replacement must be in place and use only constant extra memory.
+        """
+        pivot = -1
+        num_len = len(nums) # Just makes it easier
+
+        if num_len == 1: # Nothing needed
+            pass
+        elif nums == sorted(nums)[::-1]: # If list is same as it's reverse, loop back to sorted version
+            nums.sort()
+        else:
+            for i in range(num_len-2,-1,-1): # Find where it's no longer asc going from R->L
+                if nums[i] < nums[i+1]:
+                    pivot = i
+                    break
+            for j in range(num_len-1, pivot, -1): # Find where the next biggest value than the pivot is
+                if nums[j] > nums[pivot]:
+                    nums[pivot], nums[j] = nums[j], nums[pivot] #Swap
+                    break
+
+            nums[pivot+1:] = reversed(nums[pivot+1:]) # Reverse the back half to be the smallest possible
 
 
 if __name__ == "__main__":

@@ -811,6 +811,18 @@ class Solution:
         """
         return nums.index(target) if target in nums else -1 # Okay, so this is maybe overly simple for the intended application, and doesn't meet the complexity requirements (but does pass the submission tests)
 
+    def searchRange(self, nums: list[int], target: int) -> list[int]:
+        """LeetCode #34: Find First and Last Position of Element in Sorted Array.
+
+        Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
+        If target is not found in the array, return [-1, -1].
+        You must write an algorithm with O(log n) runtime complexity.
+        """
+        if len(nums) < 1 or target not in nums:
+            return [-1, -1]
+        return [util.binary_search(nums, target, "first", -1), util.binary_search(nums, target, "last", -1)]
+
+
 
 
 if __name__ == "__main__":

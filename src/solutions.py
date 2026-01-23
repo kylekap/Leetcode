@@ -741,6 +741,38 @@ class Solution:
 
             nums[pivot+1:] = reversed(nums[pivot+1:]) # Reverse the back half to be the smallest possible
 
+    def longestValidParentheses(self, s: str) -> int:
+        """LeetCode #32: Longest Valid Parentheses.
+
+        Given a string containing just the characters '(' and ')', return the length of the longest valid (well-formed) parentheses substring.
+        """
+
+        def add_p(ch, open_p, closed_p):
+            return (open_p + 1, closed_p) if ch == "(" else (open_p, closed_p + 1)
+
+        max_len = open_p = closed_p = 0
+
+        if len(s) <= 2: # Base case  # noqa: PLR2004
+            return 2 if s == "()" else 0 # Return 2 if valid, else 0
+        if s.count("(") == 0 or s.count(")") == 0: # If you don't have any open or closed parentheses, invalid
+            return 0
+
+        for char in s: # Count the number of open and closed parentheses
+            open_p, closed_p = add_p(char, open_p, closed_p)
+            if open_p == closed_p: # If they're equal, it's valid
+                max_len = max(max_len, open_p + closed_p) # Update the max
+            elif open_p < closed_p: # If open is less than closed, it's invalid
+                open_p = closed_p = 0 # Reset
+
+        open_p = closed_p = 0
+
+        for char in s[::-1]: # Count the number of open and closed parentheses, REVERSED THIS TIME
+            open_p, closed_p = add_p(char, open_p, closed_p)
+            if open_p == closed_p: # If they're equal, it's valid
+                max_len = max(max_len, open_p + closed_p) # Update the max
+            elif open_p > closed_p: # If open is more than closed, it's invalid
+                open_p = closed_p = 0 # Reset
+        return max_len
 
 if __name__ == "__main__":
     sol = Solution()

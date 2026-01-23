@@ -774,5 +774,44 @@ class Solution:
                 open_p = closed_p = 0 # Reset
         return max_len
 
+    def search(self, nums: list[int], target: int) -> int:
+        """LeetCode #33: Search in Rotated Sorted Array.
+
+        There is an integer array nums sorted in ascending order (with distinct values).
+        Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]
+        Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+        You must write an algorithm with O(log n) runtime complexity.
+        """
+        len_nums = len(nums)
+        if len_nums < 1 or (len_nums == 1 and nums[0] != target):
+            return -1
+
+        left_point = 0
+        right_point = len_nums - 1
+
+        while left_point <= right_point: # Two pointers
+            mid_point = (left_point + right_point) // 2 # Get the middle point
+            if nums[0] <= nums[mid_point]: # Left side is sorted
+                if nums[0] <= target <= nums[mid_point]: # Target is in left side
+                    right_point = mid_point # Move the right pointer to the middle to reduce the search size
+                else:
+                    left_point = mid_point + 1 # Move the left pointer to the middle to reduce the search size if it's on the right side
+            # Else, the right side is sorted
+            elif nums[mid_point] <= target <= nums[len_nums - 1]: # Target is in right side somewhere
+                left_point = mid_point + 1 # Move the left pointer to the middle to reduce the search size
+            else:
+                right_point = mid_point # Move the right pointer to the middle to reduce the search size
+
+        return left_point if nums[left_point] == target else -1 # Return the index if it's the target, else -1
+
+    def search_alt(self, nums: list[int], target: int) -> int:
+        """LeetCode #33: Search in Rotated Sorted Array.
+
+        Original solution
+        """
+        return nums.index(target) if target in nums else -1 # Okay, so this is maybe overly simple for the intended application, and doesn't meet the complexity requirements (but does pass the submission tests)
+
+
+
 if __name__ == "__main__":
     sol = Solution()

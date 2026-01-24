@@ -52,3 +52,7 @@ def binary_search(arr, target, which="any", not_found=-1):
         else: # Need to move later in list
             left_point = mid + 1
     return ix # Return the last found index
+
+def has_duplicates(some_list):
+    """Check if a list has duplicates."""
+    return len(some_list) != len(set(some_list))

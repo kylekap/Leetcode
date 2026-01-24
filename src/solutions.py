@@ -822,7 +822,56 @@ class Solution:
             return [-1, -1]
         return [util.binary_search(nums, target, "first", -1), util.binary_search(nums, target, "last", -1)]
 
+    def searchInsert(self, nums: list[int], target: int) -> int:
+        """LeetCode #35: Search Insert Position.
 
+        Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+        You must write an algorithm with O(log n) runtime complexity.
+        """
+        if target < nums[0]: # Target is smaller than anything in list
+            return 0
+        if target > nums[-1]: # Target is bigger than anything in list
+            return len(nums)
+
+        left_point = 0
+        right_point = len(nums) - 1
+
+        while left_point <= right_point: # Two pointers
+            mid = (left_point + right_point)//2 # Find the middle
+            if nums[mid] == target or left_point == right_point: # Found the target, or we're at the end of the search
+                return mid
+            if target < nums[mid]: # Need to move earlier in list
+                right_point = mid
+            else: # Need to move later in list
+                left_point = mid + 1
+        return mid # Return the last found index
+
+    def isValidSudoku(self, board: list[list[str]]) -> bool:
+        """LeetCode #36: Valid Sudoku.
+
+        Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+
+        - Each row must contain the digits 1-9 without repetition.
+        - Each column must contain the digits 1-9 without repetition.
+        - Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+        Note-
+
+        A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+        Only the filled cells need to be validated according to the mentioned rules.
+        """
+
+        def check_box(board, cell_row, cell_col):
+            """Check a 3x3 box for duplicates."""
+            li = [board[3 * (cell_row // 3) + i][3 * (cell_col // 3) + j] for i, j in itertools.product(range(3), range(3))] # Get the 3x3 box coordinates
+            return util.has_duplicates([x for x in li if x != "."]) # Check for duplicates
+
+        corners = [0, 3, 6] # The corners of each 3x3 box in the board
+
+        if any(util.has_duplicates([x for x in row if x != "."]) for row in board): # Loop through rows & check none have duplicates
+            return False
+        if any(util.has_duplicates([row[i] for row in board if row[i] != "."]) for i in range(len(board[0]))): # Loop through columns & check none have duplicates
+            return False
+        return all(not check_box(board, row, col) for row, col in itertools.product(corners, corners)) # Loop through boxes & check none have duplicates. If valid, return True
 
 
 if __name__ == "__main__":

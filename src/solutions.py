@@ -923,5 +923,39 @@ class Solution:
         _sudoku_brute_force(0)
         return board
 
+    def countAndSay(self, n: int) -> str:
+        """LeetCode #38: Count and Say.
+
+        The count-and-say sequence is a sequence of digit strings defined by the recursive formula:
+        - countAndSay(1) = "1"
+        - countAndSay(n) is the way you would "say" the digit string from countAndSay(n-1), which is then converted into a different digit string.
+
+        Run Length Encoding (RLE) is a string compression algorithm that works by replacing consecutive identical characters (repeated 2 or more times) with the concatenation of the character and the number marking the count of the characters (length of the run).
+        """
+        def _rle_generate(iterable):
+            """Generate the RLE string."""
+            li = []
+            val = ""
+            ct = 0
+            for i in iterable: # Iterate through the string
+                if i == val: # If the value is the same
+                    ct += 1 # Add 1
+                else:
+                    li.append((ct, val)) # Append the tuple of the just completed count and value
+                    val = i # Update the value
+                    ct = 1 # Reset the count
+            li.append((ct, val)) # Append the tuple of the last count and value
+            return "".join(f"{count}{char}" for count, char in li[1:]) # Return the combined string, ignoring the first blank touple
+
+        answer = "1"
+
+        if n == 1: # Edge case
+            return answer
+        for _ in range(2, n+1): # Iterate for the 2nd to the nth time
+            answer = _rle_generate(answer)
+        return answer
+
+
+
 if __name__ == "__main__":
     sol = Solution()

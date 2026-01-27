@@ -955,6 +955,51 @@ class Solution:
             answer = _rle_generate(answer)
         return answer
 
+    def combinationSum(self, candidates: list[int], target: int) -> list[list[int]]:
+
+        def backtrack(total, running_list, ix):
+            if total == self.target: # If you've found a total, add the list & stop
+                self.answer_li.append(running_list)
+                return
+            if total > self.target: # Too big, stop
+                return
+            for i in range(ix, len(self.candidates)): # Go through rest of candidates
+                backtrack(total + self.candidates[i], [*running_list, self.candidates[i]], i)
+
+        self.answer_li = [[target]] if target in candidates else [] # Set up + grab the "target in list" condition
+        self.target = target # Accessible anywhere
+        self.candidates = [x for x in candidates if x < target] # Only need to deal with the < target values
+        backtrack(0, [], 0) # Backtracking solution
+        return self.answer_li
+
+    def combinationSum2(self, candidates: list[int], target: int) -> list[list[int]]:
+        """LeetCode #40: Combination Sum II.
+
+        Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+        Each number in candidates may only be used once in the combination.
+        Note: The solution set must not contain duplicate combinations.
+        """
+        def backtrack(start_index, total):
+            if total == target: # If you've found a total, add the list & stop
+                self.answer_li.append(running_list[:])
+                return
+            for i in range(start_index, len(self.candidates)): # Go through rest of candidates
+                if i != start_index and self.candidates[i] == self.candidates[i-1]: # Avoid duplicates
+                    continue
+                if total + self.candidates[i] > target: # Check you won't get too big
+                    return
+                running_list.append(self.candidates[i])
+                backtrack(i+1, total+self.candidates[i])
+                running_list.pop()
+            return
+
+        self.answer_li = [[target]] if target in candidates else [] # Set up + grab the "target in list" condition
+        self.candidates = [x for x in candidates if x < target] # Only need to deal with the candidates who can actually contribute
+        self.candidates.sort() # Sort the candidates
+
+        running_list = []
+        backtrack(0, 0) # Backtracking solution
+        return self.answer_li
 
 
 if __name__ == "__main__":

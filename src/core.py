@@ -8,11 +8,12 @@ class Solution:
         """[summary]."""
 
     def problem(self):
-        return None
+        """[summary]."""
+        return
 
 
 if __name__ == "__main__":
     """[summary]"""
     start_time = time.time()
-    print(Solution().problem())
+    print(Solution().problem([2,3,6,7], 7))
     print("--- %s seconds ---" % (time.time() - start_time))

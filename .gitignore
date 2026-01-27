@@ -1,6 +1,8 @@
 #Private Local Files
-Private
-Private.py
+private
+scratchwork
+private.py
+scratchwork.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -873,6 +873,55 @@ class Solution:
             return False
         return all(not check_box(board, row, col) for row, col in itertools.product(corners, corners)) # Loop through boxes & check none have duplicates. If valid, return True
 
+    def solveSudoku(self, board: list[list[str]]) -> None:
+        """LeetCode #37: Sudoku Solver.
+
+        Write a program to solve a Sudoku puzzle by filling the empty cells.
+        A sudoku solution must satisfy all of the following rules:
+        - Each of the digits 1-9 must occur exactly once in each self.row.
+        - Each of the digits 1-9 must occur exactly once in each column.
+        - Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+        The '.' character indicates empty cells.
+        """
+
+        def _sudoku_brute_force(empty_index):
+            if empty_index == len(self.empty_cells): # If there are no more empty cells
+                self.ok = True # The board is valid
+                return
+            i, j = self.empty_cells[empty_index] # Get the coordinates of the empty cell
+            b = (i // 3)*3 + j//3 # Get the block index
+            for v in set("123456789")-self.row[i]-self.col[j]-self.block[b]: # Check if the value is not in the row, column or 3x3 block
+                self.row[i].add(v)
+                self.col[j].add(v)
+                self.block[b].add(v)
+                board[i][j] = v # Place the value in the cell
+                _sudoku_brute_force(empty_index + 1) # Recursively call the function
+                if self.ok: #If the solution is valid, the flag will be set to True & exit the function.
+                    return
+                # If the solution is not valid, reset
+                board[i][j] = "."
+                self.row[i].remove(v)
+                self.col[j].remove(v)
+                self.block[b].remove(v)
+            return
+
+        self.row = [set() for _ in range(9)] # Build 9 row objects
+        self.col = [set() for _ in range(9)] # Build 9 column objects
+        self.block = [set() for _ in range(9)] # Build 9 3x3 block objects
+        self.ok = False # Flag to check if the board is valid
+        self.empty_cells = [] # List of empty cells
+
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] == ".":
+                    self.empty_cells.append((i, j))
+                else: # If the cell is not empty
+                    v = board[i][j]
+                    self.row[i].add(v)
+                    self.col[j].add(v)
+                    self.block[(i // 3)*3 + j//3].add(v)
+        _sudoku_brute_force(0)
+        return board
 
 if __name__ == "__main__":
     sol = Solution()

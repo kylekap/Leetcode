@@ -15,5 +15,5 @@ class Solution:
 if __name__ == "__main__":
     """[summary]"""
     start_time = time.time()
-    print(Solution().problem([2,3,6,7], 7))
+    print(Solution().problem())
     print("--- %s seconds ---" % (time.time() - start_time))

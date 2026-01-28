@@ -1001,6 +1001,48 @@ class Solution:
         backtrack(0, 0) # Backtracking solution
         return self.answer_li
 
+    def firstMissingPositive(self, nums: list[int]) -> int:
+        """LeetCode #41: First Missing Positive.
+
+        Given an unsorted integer array nums, return the smallest missing positive integer.
+
+        You must implement an algorithm that runs in O(n) time and uses constant extra space.
+        """
+        # Use a set to keep track of the numbers for fastest lookup.
+        # Go up to the length of the array, and if the number isn't in the set, return it. Otherwise return the length+1
+        s_nums = set(nums)
+        for i in range(1, len(nums)+1):
+            if i not in s_nums:
+                return i
+        return i+1
+
+    def trap(self, height: list[int]) -> int:
+        """LeetCode #42: Trapping Rain Water.
+
+        Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+        """
+        # So, we're goin to use two arrays, one forward and one backward. The forward array will have the max value as we walk forward, and the backward array will have the max value as we walk backward.
+        # Then, we can compare the forward and backward arrays, and add the min of the two to the total.
+        # The "highest" wall from the left will be the max of forward, and the "highest" wall from the right will be the max of backward, then we can add the min of the two since you can't go above the lower wall.
+
+        h_len = len(height) # How long is array
+        forward = [0]*h_len # Forward array
+        backward = [0]*h_len # Backward array
+        max_val_f = 0 # Max value as we walk forward
+        max_val_r = 0 # Max value as we walk backward
+        total = 0 # Total "water" held
+
+        for i in range(h_len): # Loop through array
+            max_val_f = max(max_val_f, height[i]) # Get max value, forward
+            forward[i] = max_val_f # Add max value to forward array
+            max_val_r = max(max_val_r, height[h_len-i-1]) # Get max value, backward.
+            backward[i] = max_val_r # Add max value to backward array
+
+        backward = backward[::-1] # Reverse, for easy comparison of i values
+
+        for i in range(len(height)):
+            total += max(0, min(forward[i], backward[i]) - height[i]) # Add to total. Min of forward and backward - current height. 0 if less than 0
+        return total
 
 if __name__ == "__main__":
     sol = Solution()

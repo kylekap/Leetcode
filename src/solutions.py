@@ -1099,7 +1099,7 @@ class Solution:
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
 
-    def isMatch(self, s: str, p: str) -> bool:
+    def isMatch(self, s: str, p: str) -> bool: #TODO(#2): Try without fnmatch
         """LeetCode #44: Wildcard Matching.
 
         Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*'.
@@ -1109,14 +1109,14 @@ class SolutionButCheeky:
         """
         return fnmatch.fnmatch(s, p) # Yeah, i'm feeling cheeky
 
-    def permute(self, nums: list[int]) -> list[list[int]]:
+    def permute(self, nums: list[int]) -> list[list[int]]: #TODO(#3): Try without itertools
         """LeetCode #46: Permutations.
 
         Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
         """
         return list(itertools.permutations(nums)) # Easy peasy when you don't care about intention
 
-    def permuteUnique(self, nums: list[int]) -> list[list[int]]:
+    def permuteUnique(self, nums: list[int]) -> list[list[int]]: #TODO(#4): Try without itertools
         """LeetCode #47: Permutations II.
 
         Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.

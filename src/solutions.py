@@ -1096,8 +1096,8 @@ class Solution:
             ix = {i+j for i in ix for j in range(1, nums[i]+1)} # Generate new indexes we can reach with this count of jumps
         return count
 
-class SolutionButForReusedNames:
-    """Same as Solution, but separated for the re-used names."""
+class SolutionButCheeky:
+    """Same as Solution, but separated for the cheeky answers."""
 
     def isMatch(self, s: str, p: str) -> bool:
         """LeetCode #44: Wildcard Matching.
@@ -1108,6 +1108,24 @@ class SolutionButForReusedNames:
         The matching should cover the entire input string (not partial).
         """
         return fnmatch.fnmatch(s, p) # Yeah, i'm feeling cheeky
+
+    def permute(self, nums: list[int]) -> list[list[int]]:
+        """LeetCode #46: Permutations.
+
+        Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+        """
+        return list(itertools.permutations(nums)) # Easy peasy when you don't care about intention
+
+    def permuteUnique(self, nums: list[int]) -> list[list[int]]:
+        """LeetCode #47: Permutations II.
+
+        Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
+        """
+        return list(set(itertools.permutations(nums))) # Easy peasy when you don't care about intention
+
+class SolutionButAlreadyUsedTheName:
+    """Same as Solution, but separated for the already used names."""
+
 
 if __name__ == "__main__":
     sol = Solution()

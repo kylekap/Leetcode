@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import fnmatch
 import heapq
 import itertools
 import re
@@ -1076,6 +1077,37 @@ class Solution:
                 new_val+= num1_ch*num2_ch*10**(i+j)
         """return str(int(num1)*int(num2)) <-- This is the "ignore the rules" way of doing it everyone seems to do."""
         return str(new_val) # return the new value
+
+    def jump(self, nums: list[int]) -> int:
+        """LeetCode #45: Jump Game II.
+
+        You are given a 0-indexed array of integers nums of length n. You are initially positioned at index 0.
+        Each element nums[i] represents the maximum length of a forward jump from index i. In other words, if you are at index i, you can jump to any index (i+j) where 0 <= j <= nums[i] and i+j < n.
+        Return the minimum number of jumps to reach nums[n - 1].
+        """
+        # Alright, admittedly not the most optimized, but it works.
+        # The idea is to use a set to keep track of the indexes we've already visited, and then use a while loop to keep generating indexes until we reach the last index.
+        if len(nums) <=1: # Edge case
+            return 0
+        ix = {0} # Set to keep track of indexes
+        count = 0 # Loop #
+        while len(nums)-1 not in ix:
+            count+=1 # Add to the loop count
+            ix = {i+j for i in ix for j in range(1, nums[i]+1)} # Generate new indexes we can reach with this count of jumps
+        return count
+
+class SolutionButForReusedNames:
+    """Same as Solution, but separated for the re-used names."""
+
+    def isMatch(self, s: str, p: str) -> bool:
+        """LeetCode #44: Wildcard Matching.
+
+        Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*'.
+        '?' Matches any single character.
+        '*' Matches any sequence of characters (including the empty sequence).
+        The matching should cover the entire input string (not partial).
+        """
+        return fnmatch.fnmatch(s, p) # Yeah, i'm feeling cheeky
 
 if __name__ == "__main__":
     sol = Solution()

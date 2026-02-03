@@ -1139,6 +1139,24 @@ class Solution:
             ix = {i+j for i in ix for j in range(1, nums[i]+1)} # Generate new indexes we can reach with this count of jumps
         return count
 
+    def rotate(self, matrix: list[list[int]]) -> None:
+        """Leetcode #48: Rotate Image.
+
+        You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).
+        You have to rotate the image in-place, which means you have to modify the input 2D matrix directly.
+        DO NOT return anything, modify matrix in-place instead.
+        """
+        # Swap row & column, iterating backwards for columns to serve as the reversal.
+        # Need to do matrix[:] to make the swap inplace
+        matrix[:] = [[matrix[j][i] for j in range(len(matrix)-1, -1, -1)] for i in range(len(matrix[0]))]
+
+        """Alternate way:
+        matrix.reverse() # Reverse the matrix
+        for row in range(len(A)): # Iterate through rows & swap the columns
+            for col in range(row):
+                A[row][col], A[col][row] = A[col][row], A[row][col]
+        """
+
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
 
@@ -1165,6 +1183,7 @@ class SolutionButCheeky:
         Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
         """
         return list(set(itertools.permutations(nums))) # Easy peasy when you don't care about intention
+
 
 class SolutionButAlreadyUsedTheName:
     """Same as Solution, but separated for the already used names."""

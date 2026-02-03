@@ -1157,6 +1157,20 @@ class Solution:
                 A[row][col], A[col][row] = A[col][row], A[row][col]
         """
 
+    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
+        """LeetCode #49: Group Anagrams.
+
+        Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+        """
+        # Convert everything to it's sorted version. Anagrams will have the same sorted version.
+        # Generate a dict with the sorted string as the key, and the list of anagrams as the value
+        di = {}
+        for ea in strs: # Iterate through each string
+            sorted_string = "".join(sorted(ea)) # Get the sorted string (anagrams will have the same sorted string)
+            di[sorted_string] = [*di.get(sorted_string, []), ea] # Add to the dict, using the sorted string as the key
+        return list(di.values()) # Return the values, as a list of lists.
+
+
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
 

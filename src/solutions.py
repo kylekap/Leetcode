@@ -1170,6 +1170,57 @@ class Solution:
             di[sorted_string] = [*di.get(sorted_string, []), ea] # Add to the dict, using the sorted string as the key
         return list(di.values()) # Return the values, as a list of lists.
 
+    def solveNQueens(self, n: int) -> list[list[str]]:
+        """LeetCode #51: N-Queens.
+
+        The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+        Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+        """
+        # Similar to Sudoku -> Use a list of the row, column and diagonal values to check for conflicts.
+        # Then use a backtracking algorithm to generate all possible solutions.
+        solution = []
+        row_tf = [False] * n
+        col_tf = [False] * n
+        diag1_tf = [False] * (2 * n)
+        diag2_tf = [False] * (2 * n)
+        board = [["." for i in range(n)] for _ in range(n)] # Empty board. We're not actually tracking the queens here, it's just for display
+
+        def _brute_force(row):
+            if row == n:
+                solution.append(["".join(row_list) for row_list in board]) # Add the board to the solution
+                return
+            for col in range(n): # Iterate through each column to place the queen
+                if row_tf[row] or col_tf[col] or diag1_tf[row - col] or diag2_tf[row + col]: # Check if any row/col/diag already has a queen
+                    continue # skip if so
+                board[row][col] = "Q" # Try placing queen
+                # Update the row/col/diags
+                row_tf[row] = True
+                col_tf[col] = True
+                diag1_tf[row - col] = True
+                diag2_tf[row + col] = True
+
+                # Recursion
+                _brute_force(row + 1)
+
+                # Backtrack
+                board[row][col] = "."
+                row_tf[row] = False
+                col_tf[col] = False
+                diag1_tf[row - col] = False
+                diag2_tf[row + col] = False
+
+        _brute_force(0) # Start at row 0
+        return solution
+
+    def totalNQueens(self, n: int) -> int:
+        """LeetCode #52: N-Queens II.
+
+        Given an integer n, return the number of distinct solutions to the n-queens puzzle.
+        """
+        # Just count the number of solutions to the previous problem
+        return len(self.solveNQueens(n))
+
+
 
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
@@ -1198,10 +1249,53 @@ class SolutionButCheeky:
         """
         return list(set(itertools.permutations(nums))) # Easy peasy when you don't care about intention
 
+    def myPow(self, x: float, n: int) -> float:
+        """LeetCode #50: Pow(x, n).
+
+        Implement pow(x, n), which calculates x raised to the power n.
+        """
+        # Did not quite get why this was so hard, it's just x**n?
+        if x == 1 or n == 0:
+            return 1
+        return x**n # Easy peasy
 
 class SolutionButAlreadyUsedTheName:
     """Same as Solution, but separated for the already used names."""
 
+    def solveNQueens(self, n: int) -> list[list[str]]:
+        solution = []
+        row_used = set()
+        col_used = set()
+        diag1_used = set()
+        diag2_used = set()
+        board = [["." for i in range(n)] for _ in range(n)] # Empty board. We're not actually tracking the queens here, it's just for display
+
+        def _brute_force(row):
+            if row == n:
+                solution.append(["".join(row_list) for row_list in board]) # Add the board to the solution
+                return
+            for col in range(n): # Iterate through each column to place the queen
+                if row in row_used or col in col_used or row - col in diag1_used or row + col in diag2_used: # Check if any row/col/diag already has a queen
+                    continue # skip if so
+                board[row][col] = "Q" # Try placing queen
+                # Update the row/col/diags
+                row_used.add(row)
+                col_used.add(col)
+                diag1_used.add(row - col)
+                diag2_used.add(row + col)
+
+                # Recursion
+                _brute_force(row + 1)
+
+                # Backtrack
+                board[row][col] = "."
+                row_used.remove(row)
+                col_used.remove(col)
+                diag1_used.remove(row - col)
+                diag2_used.remove(row + col)
+
+        _brute_force(0) # Start at row 0
+        return solution
 
 if __name__ == "__main__":
     sol = Solution()

@@ -1220,6 +1220,20 @@ class Solution:
         # Just count the number of solutions to the previous problem
         return len(self.solveNQueens(n))
 
+    def maxSubArray(self, nums: list[int]) -> int:
+        """LeetCode #53: Maximum Subarray.
+
+        Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+        """
+        # Iterate through - if the running total ever hits negative (aka, won't make anything else added bigger), reset. Return the maximum running total found.
+        if max(nums) < 0: # If all negative, return the max
+            return max(nums)
+        tot = 0
+        max_tot = -1E5
+        for ea in nums: # Iterate through each element
+            tot = max(tot + ea, 0) # Update the running total
+            max_tot = max(max_tot, tot) # Update the max
+        return max_tot # Return the max
 
 
 class SolutionButCheeky:

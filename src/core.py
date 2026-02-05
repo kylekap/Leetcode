@@ -7,13 +7,8 @@ class Solution:
     def __init__(self):
         """[summary]."""
 
-    def problem(self, nums: list[int]) -> int:
-        tot = 0
-        max_tot = 0
-        for ea in range(len(nums)):
-            tot = max(tot+nums[ea], 0)
-            max_tot = max(max_tot, tot)
-        return max_tot
+    def problem(self):
+        return None
 
 
 if __name__ == "__main__":

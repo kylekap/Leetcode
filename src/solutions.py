@@ -1235,6 +1235,25 @@ class Solution:
             max_tot = max(max_tot, tot) # Update the max
         return max_tot # Return the max
 
+    def spiralOrder(self, matrix: list[list[int]]) -> list[int]:
+        """LeetCode #54: Spiral Matrix.
+
+        Given an m x n matrix, return all elements of the matrix in spiral order.
+        """
+        # Can use the logic from the rotate above -> Move the matrix counterclockwise & keep taking the top row off.abs
+        def rotate_clockwise(matrix):
+            """Flips a matrix 90 degrees clockwise."""
+            return list(zip(*matrix[::-1]))
+
+        def rotate_counterclockwise(matrix):
+            """Flips a matrix 90 degrees counterclockwise."""
+            return list(zip(*matrix))[::-1]
+        ans = []
+        while len(matrix) > 0: # While there's original matrix left
+            ans+=matrix[0] # Add the top row
+            matrix = rotate_counterclockwise(matrix[1:]) #Remove top row & rotate 90degrees, to get the next side to add
+        return ans # Once done, return the list.
+
 
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""

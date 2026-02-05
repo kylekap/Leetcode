@@ -1254,6 +1254,45 @@ class Solution:
             matrix = rotate_counterclockwise(matrix[1:]) #Remove top row & rotate 90degrees, to get the next side to add
         return ans # Once done, return the list.
 
+    def merge(self, intervals: list[list[int]]) -> list[list[int]]:
+        """LeetCode #56: Merge Intervals.
+
+        Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+        """
+        # Sort the intervals by start, then check for overlaps (if the end of the previous interval is >= the start of the next interval).
+        def overlaps(x, y):
+            return max(x[0],y[0]) <= min(x[1],y[1])
+
+        intervals = sorted(intervals)# Sort
+
+        ans = [intervals[0]] # Add the first
+
+        for ea in intervals[1:]: # Iterate each interval
+            if overlaps(ea, ans[-1]): # If overlap
+                ans[-1][1] = max(ans[-1][1], ea[1]) # Update the end of the last interval with the new end
+            else:
+                ans.append(ea) # Add the new interval if no overlap
+        return ans
+
+    def insert(self, intervals: list[list[int]], newInterval: list[int]) -> list[list[int]]:  # noqa: N803
+        """LeetCode #57: Insert Interval.
+
+        Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+        """
+        # Just slap the new interval in there & re-run merge.
+        return self.merge([*intervals, newInterval])
+
+    def lengthOfLastWord(self, s: str) -> int:
+        """LeetCode #58: Length of Last Word.
+
+        Given a string s consisting of some words separated by spaces, return the length of the last word in the string.
+        A word is a maximal substring consisting of non-space characters only.
+        """
+        rev_s = s[::-1].lstrip() # Reverse & remove leading whitespace
+        words = rev_s.split(" ") # Split into words
+        return len(words[0]) # Return the length of the last word
+
+
 
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""

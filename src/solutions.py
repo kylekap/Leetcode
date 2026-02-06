@@ -1292,6 +1292,24 @@ class Solution:
         words = rev_s.split(" ") # Split into words
         return len(words[0]) # Return the length of the last word
 
+    def generateMatrix(self, n: int) -> list[list[int]]:
+        """LeetCode #59: Spiral Matrix II.
+
+        Given a positive integer n, generate an n x n matrix filled with elements from 1 to n^2 in spiral order.
+        """
+        # Same logic as Spiral Matrix, but opposite. Start from a single cell & add to the outside, rotating clockwise each time.
+        def rotate_clockwise(matrix):
+            """Flips a matrix 90 degrees clockwise."""
+            return list(zip(*matrix[::-1]))
+
+        i = n**2
+        matrix = [[i]] # Start with a single cell
+        while i > 1: # While there's more to add
+            for row in range(len(matrix)): # Iterate through each row
+                i-=1 # Decrement
+                matrix[row] = [i] + list(matrix[row])  # Add to the left of each row. # noqa: RUF005
+            matrix = rotate_clockwise(matrix) # Rotate clockwise to start next iteration
+        return matrix # Multiples of 4, so end up oriented right.
 
 
 class SolutionButCheeky:

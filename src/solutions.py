@@ -1423,6 +1423,36 @@ class Solution:
 
         return base.next
 
+    def rotateRight(self, head: [ListNode] | None, k: int) -> [ListNode] | None:
+        """LeetCode #61: Rotate List.
+
+        Given the head of a linked list, rotate the list to the right by k places.
+        """
+        # Get the length of the linked list, find how many actual rotations to do, set up two pointers & loop front to back.
+        base = head
+        li_len = 0
+
+        while base: # get length, to see if we have to loop or anything crazy
+            li_len+=1
+            base = base.next
+
+        if not head or li_len == 0 or k%li_len == 0: # Edge cases
+            return head
+
+        lead = head
+        follow = head
+
+        for _ in range(k % li_len): # Step forward the number of spots you need
+            lead = lead.next
+
+        while lead.next: # Walk forward to get the "follow" point to the right spot in the rotation & "lead" pointer at the end of the linked list, for easy attachment to beginning
+            lead = lead.next
+            follow = follow.next
+
+        ans = follow.next # create ans
+        follow.next = None # break connection in the second part
+        lead.next = head # connect back to front
+        return ans
 
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""

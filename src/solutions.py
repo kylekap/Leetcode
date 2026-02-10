@@ -1454,6 +1454,16 @@ class Solution:
         lead.next = head # connect back to front
         return ans
 
+    def uniquePaths(self, m: int, n: int) -> int:
+        """LeetCode #62: Unique Paths.
+
+        There is a robot on an m x n grid. The robot is initially located at the top-left corner (i.e., grid[0][0]). The robot tries to move to the bottom-right corner (i.e., grid[m-1][n-1]). The robot can only move either down or right at any point in time.
+        Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.
+        """
+        # This is just a binomial coefficient question, so use that. Same kind of issue as Project Euler #15, but with the variable X & Y, and robot starting on the grid (-1's)
+        return int(util.binomial_coefficient(m-1+n-1,n-1))
+
+
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
 

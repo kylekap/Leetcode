@@ -68,3 +68,15 @@ def nth_fibonacci(n):
     for _ in range(n-1):
         x, y = y, x+y
     return x
+
+def binomial_coefficient(n, k):
+    return calc_factorial(n) / (calc_factorial(k) * calc_factorial(n - k))
+
+def calc_factorial(number):
+    """Calculate the factorial of a number."""
+    if number < 0:
+        return -1
+    val = 1
+    for ea in range(2, number + 1):
+        val *= ea
+    return val

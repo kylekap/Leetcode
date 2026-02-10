@@ -59,3 +59,12 @@ def binary_search(arr, target, which="any", not_found=-1):
 def has_duplicates(some_list):
     """Check if a list has duplicates."""
     return len(some_list) != len(set(some_list))
+
+
+def nth_fibonacci(n):
+    """Return the nth fibonacci number."""
+    x = 1
+    y = 2
+    for _ in range(n-1):
+        x, y = y, x+y
+    return x

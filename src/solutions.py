@@ -1311,6 +1311,118 @@ class Solution:
             matrix = rotate_clockwise(matrix) # Rotate clockwise to start next iteration
         return matrix # Multiples of 4, so end up oriented right.
 
+    def plusOne(self, digits: list[int]) -> list[int]:
+        """LeetCode #66: Plus One.
+
+        Given a non-empty array of digits representing a non-negative integer, plus one to the integer.
+        The digits are stored such that the most significant digit is at the head of the list, and each element in the array contain a single digit.
+        You may assume the integer does not contain any leading zero, except the number 0 itself.
+        """
+        # Add 1 to the last digit. Then walk the array backwards, if the current digit is > 9, add 1 to the next digit.
+        new = digits
+        new[-1] += 1
+        for i in range(len(digits)-1,-1,-1): # Walk backwards
+            if len(str(digits[i])) != 1: # If the current digit is > 9
+                digits[i] = 0 # Set it to 0
+                if i == 0: # If it's the first digit
+                    new.insert(0,1) # Add a 1
+                else:
+                    digits[i-1] += 1 # Add 1 to the next digit
+            else:
+                return new # We're done
+        return new
+
+    def addBinary(self, a: str, b: str) -> str:
+        """LeetCode #67: Add Binary.
+
+        Given two binary strings a and b, return their sum as a binary string.
+        """
+        # Get them the same length & walk through the binary math )
+        diff = len(a)-len(b) # Get the difference in length
+        ans = "" # Start with an empty string
+        c = "0" # Set the carry to 0
+
+        if diff > 0: # If a is longer, pad b
+            b = "0"*diff+b
+        else: # If b is longer, pad a
+            a = "0"*-diff+a
+
+        # Iterate through the strings
+        for i in range(len(a)-1, -1, -1):
+            a1 = a[i] == "1"
+            b1 = b[i] == "1"
+            c = c == "1"
+            ct = sum([a1, b1, c]) # Count the number of 1s
+
+            if  ct >= 3: # If there are 3 or more 1s  # noqa: PLR2004
+                ans = "1" + ans
+                c = "1"
+            elif ct >= 2: # If there are 2 or more 1s  # noqa: PLR2004
+                ans = "0" + ans
+                c = "1"
+            elif ct >= 1: # If there is 1 or more 1s
+                ans = "1" + ans
+                c = "0"
+            else: # If there are no 1s
+                ans = "0" + ans
+                c = "0"
+        if c == "1": # If there is a carry at the end of processing
+            ans = "1" + ans
+        return ans
+
+    def climbStairs(self, n: int) -> int:
+        """LeetCode #70: Climbing Stairs.
+
+        You are climbing a staircase. It takes n steps to reach the top.
+        Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+        """
+        # 1 - 1 way
+        # 2 - 2 ways
+        # 3 - 3 ways (1+1+1, 2+1, 1+2)
+        # 4 - 5 ways (1+1+1+1, 1+2+1, 2+2, 1+1+2, 2+1+1)
+        # It's just expanding the fibonacci sequence
+        return util.nth_fibonacci(n)
+
+    def simplifyPath(self, path: str) -> str:
+        """LeetCode #71: Simplify Path.
+
+        Given a string path, which is an absolute path (starting with a slash '/') to a file or directory in a Unix-style file system, convert it to the simplified canonical path.
+        """
+        # Split the string by "/", then walk through it
+        new_path = r"/"
+        for p in path.split("/"):
+            if p == "..": # Go up indicator
+                new_path = "/".join(new_path.split("/")[:-2]) + "/" # Go up a level
+            elif p in {".", ""}: # Ignore these
+                continue
+            else: # Standard case
+                new_path += p + "/"
+        return new_path if new_path[-1] != "/" or len(new_path)==1 else new_path[:-1] # Remove trailing slash, unless it's root
+
+    def deleteDuplicates(self, head: [ListNode] | None) -> [ListNode] | None:
+        """LeetCode #83: Remove Duplicates from Sorted List.
+
+        Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
+        """
+        base = ListNode()
+        current_node = base
+        last_digit = -101 # Somehting we wouldn't see
+
+        if head is None: #Before we get a bunch of errors, check edge cases
+            return head
+
+        while head:
+            digit = head.val if head else None # Get the next digit to check
+            if digit is None:
+                return base.next
+            if last_digit != digit: # New digit
+                current_node.next = ListNode(digit) # Set it
+                current_node = current_node.next # Advance it
+            head = head.next if head else None #Get the next main list item to check
+            last_digit = digit # Update the trailing value
+
+        return base.next
+
 
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""

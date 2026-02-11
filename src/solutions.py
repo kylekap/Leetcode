@@ -1501,7 +1501,27 @@ class Solution:
                 obstacleGrid[i][j] = min(obstacleGrid[i-1][j],0) + min(obstacleGrid[i][j-1],0)
         return -1*obstacleGrid[-1][-1]
 
+    def minPathSum(self, grid: list[list[int]]) -> int:
+        """LeetCode #64: Minimum Path Sum.
 
+        Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
+        Note: You can only move either down or right at any point in time.
+        """
+        # Very similar to approach in #63, but now we have to find the min of the left & up. There's also no obstacles to worry about
+        rows = len(grid) # Number of rows
+        cols = len(grid[0]) # Number of columns
+
+        # Since they don't have a second cell to add, special cases top row & column
+        for row in range(1, rows): # First row
+            grid[row][0] += grid[row-1][0]
+        for col in range(1, cols): # First column
+            grid[0][col] += grid[0][col-1]
+
+
+        for i in range(1, rows):
+            for j in range(1, cols):
+                grid[i][j] += min(grid[i-1][j], grid[i][j-1]) # Find min of up & left, add it to current cells value. Since we're going down & right, we'll have already compiled both those previously
+        return grid[-1][-1] # Last cell
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
 

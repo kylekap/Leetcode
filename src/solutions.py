@@ -1464,6 +1464,44 @@ class Solution:
         return int(util.binomial_coefficient(m-1+n-1,n-1))
 
 
+    def uniquePathsWithObstacles(self, obstacleGrid: list[list[int]]) -> int:  # noqa: N803
+        """LeetCode #63: Unique Paths II.
+
+        You are given an m x n integer array grid.
+        There is a robot initially located at the top-left corner (i.e., grid[0][0]). The robot tries to move to the bottom-right corner (i.e., grid[m-1][n-1]). The robot can only move either down or right at any point in time.
+        An obstacle and space are marked as 1 or 0 respectively in grid. A path that the robot takes cannot include any square that is an obstacle.
+        Return the number of possible unique paths that the robot can take to reach the bottom-right corner.
+        The testcases are generated so that the answer will be less than or equal to 2 * 109.
+        """
+        # Go through each row & add up & right. If an obstacle, ignore. Special cases taken care of first & then go through first row & column to set up for success
+        rows = len(obstacleGrid)
+        cols = len(obstacleGrid[0])
+
+        if (obstacleGrid[-1][-1] == 1 or obstacleGrid[0][0] == 1) \
+            or (rows == 1 and 1 in obstacleGrid[0]) \
+            or (cols == 1 and 1 in obstacleGrid):
+            return 0
+
+        for j in range(cols): # First row
+            if obstacleGrid[0][j] == 1:
+                break # If the current cell is an obstacle, ignore it & everything across as inaccessible
+            obstacleGrid[0][j] = -1
+
+        for i in range(rows): # First column
+            if obstacleGrid[i][0] == 1:
+                break # If the current cell is an obstacle, ignore it & everything down as inaccessible
+            obstacleGrid[i][0] = -1
+
+        for i in range(1, rows):
+            for j in range(1, cols):
+                # If the current cell is an obstacle, ignore it. If BOTH the left & up are obstacles, ignore
+                if (obstacleGrid[i][j] == 1) or (obstacleGrid[i-1][j] == 1 and obstacleGrid[i][j-1] == 1):
+                    continue
+                # If the current cell is not an obstacle, add the left & up. The min here is because we're all negative, anything positive is "blocked".
+                obstacleGrid[i][j] = min(obstacleGrid[i-1][j],0) + min(obstacleGrid[i][j-1],0)
+        return -1*obstacleGrid[-1][-1]
+
+
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
 

@@ -921,18 +921,20 @@ class Solution:
         """
 
         def _sudoku_brute_force(empty_index):
-            if empty_index == len(self.empty_cells): # If there are no more empty cells
-                self.ok = True # The board is valid
+            if empty_index == len(self.empty_cells):  # If there are no more empty cells
+                self.ok = True  # The board is valid
                 return
-            i, j = self.empty_cells[empty_index] # Get the coordinates of the empty cell
-            b = (i // 3)*3 + j//3 # Get the block index
-            for v in set("123456789")-self.row[i]-self.col[j]-self.block[b]: # Check if the value is not in the row, column or 3x3 block
+            i, j = self.empty_cells[empty_index]  # Get the coordinates of the empty cell
+            b = (i // 3) * 3 + j // 3  # Get the block index
+            for v in (
+                set("123456789") - self.row[i] - self.col[j] - self.block[b]
+            ):  # Check if the value is not in the row, column or 3x3 block
                 self.row[i].add(v)
                 self.col[j].add(v)
                 self.block[b].add(v)
-                board[i][j] = v # Place the value in the cell
-                _sudoku_brute_force(empty_index + 1) # Recursively call the function
-                if self.ok: #If the solution is valid, the flag will be set to True & exit the function.
+                board[i][j] = v  # Place the value in the cell
+                _sudoku_brute_force(empty_index + 1)  # Recursively call the function
+                if self.ok:  # If the solution is valid, the flag will be set to True & exit the function.
                     return
                 # If the solution is not valid, reset
                 board[i][j] = "."
@@ -941,21 +943,21 @@ class Solution:
                 self.block[b].remove(v)
             return
 
-        self.row = [set() for _ in range(9)] # Build 9 row objects
-        self.col = [set() for _ in range(9)] # Build 9 column objects
-        self.block = [set() for _ in range(9)] # Build 9 3x3 block objects
-        self.ok = False # Flag to check if the board is valid
-        self.empty_cells = [] # List of empty cells
+        self.row = [set() for _ in range(9)]  # Build 9 row objects
+        self.col = [set() for _ in range(9)]  # Build 9 column objects
+        self.block = [set() for _ in range(9)]  # Build 9 3x3 block objects
+        self.ok = False  # Flag to check if the board is valid
+        self.empty_cells = []  # List of empty cells
 
         for i in range(9):
             for j in range(9):
                 if board[i][j] == ".":
                     self.empty_cells.append((i, j))
-                else: # If the cell is not empty
+                else:  # If the cell is not empty
                     v = board[i][j]
                     self.row[i].add(v)
                     self.col[j].add(v)
-                    self.block[(i // 3)*3 + j//3].add(v)
+                    self.block[(i // 3) * 3 + j // 3].add(v)
         _sudoku_brute_force(0)
         return board
 
@@ -968,26 +970,29 @@ class Solution:
 
         Run Length Encoding (RLE) is a string compression algorithm that works by replacing consecutive identical characters (repeated 2 or more times) with the concatenation of the character and the number marking the count of the characters (length of the run).
         """
+
         def _rle_generate(iterable):
             """Generate the RLE string."""
             li = []
             val = ""
             ct = 0
-            for i in iterable: # Iterate through the string
-                if i == val: # If the value is the same
-                    ct += 1 # Add 1
+            for i in iterable:  # Iterate through the string
+                if i == val:  # If the value is the same
+                    ct += 1  # Add 1
                 else:
-                    li.append((ct, val)) # Append the tuple of the just completed count and value
-                    val = i # Update the value
-                    ct = 1 # Reset the count
-            li.append((ct, val)) # Append the tuple of the last count and value
-            return "".join(f"{count}{char}" for count, char in li[1:]) # Return the combined string, ignoring the first blank touple
+                    li.append((ct, val))  # Append the tuple of the just completed count and value
+                    val = i  # Update the value
+                    ct = 1  # Reset the count
+            li.append((ct, val))  # Append the tuple of the last count and value
+            return "".join(
+                f"{count}{char}" for count, char in li[1:]
+            )  # Return the combined string, ignoring the first blank touple
 
         answer = "1"
 
-        if n == 1: # Edge case
+        if n == 1:  # Edge case
             return answer
-        for _ in range(2, n+1): # Iterate for the 2nd to the nth time
+        for _ in range(2, n + 1):  # Iterate for the 2nd to the nth time
             answer = _rle_generate(answer)
         return answer
 
@@ -999,18 +1004,18 @@ class Solution:
         It is guaranteed that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
         """
         def backtrack(total, running_list, ix):
-            if total == self.target: # If you've found a total, add the list & stop
+            if total == self.target:  # If you've found a total, add the list & stop
                 self.answer_li.append(running_list)
                 return
-            if total > self.target: # Too big, stop
+            if total > self.target:  # Too big, stop
                 return
-            for i in range(ix, len(self.candidates)): # Go through rest of candidates
+            for i in range(ix, len(self.candidates)):  # Go through rest of candidates
                 backtrack(total + self.candidates[i], [*running_list, self.candidates[i]], i)
 
-        self.answer_li = [[target]] if target in candidates else [] # Set up + grab the "target in list" condition
-        self.target = target # Accessible anywhere
-        self.candidates = [x for x in candidates if x < target] # Only need to deal with the < target values
-        backtrack(0, [], 0) # Backtracking solution
+        self.answer_li = [[target]] if target in candidates else []  # Set up + grab the "target in list" condition
+        self.target = target  # Accessible anywhere
+        self.candidates = [x for x in candidates if x < target]  # Only need to deal with the < target values
+        backtrack(0, [], 0)  # Backtracking solution
         return self.answer_li
 
     def combinationSum2(self, candidates: list[int], target: int) -> list[list[int]]:
@@ -1020,26 +1025,29 @@ class Solution:
         Each number in candidates may only be used once in the combination.
         Note: The solution set must not contain duplicate combinations.
         """
+
         def backtrack(start_index, total):
-            if total == target: # If you've found a total, add the list & stop
+            if total == target:  # If you've found a total, add the list & stop
                 self.answer_li.append(running_list[:])
                 return
-            for i in range(start_index, len(self.candidates)): # Go through rest of candidates
-                if i != start_index and self.candidates[i] == self.candidates[i-1]: # Avoid duplicates
+            for i in range(start_index, len(self.candidates)):  # Go through rest of candidates
+                if i != start_index and self.candidates[i] == self.candidates[i - 1]:  # Avoid duplicates
                     continue
-                if total + self.candidates[i] > target: # Check you won't get too big
+                if total + self.candidates[i] > target:  # Check you won't get too big
                     return
                 running_list.append(self.candidates[i])
-                backtrack(i+1, total+self.candidates[i])
+                backtrack(i + 1, total + self.candidates[i])
                 running_list.pop()
             return
 
-        self.answer_li = [[target]] if target in candidates else [] # Set up + grab the "target in list" condition
-        self.candidates = [x for x in candidates if x < target] # Only need to deal with the candidates who can actually contribute
-        self.candidates.sort() # Sort the candidates
+        self.answer_li = [[target]] if target in candidates else []  # Set up + grab the "target in list" condition
+        self.candidates = [
+            x for x in candidates if x < target
+        ]  # Only need to deal with the candidates who can actually contribute
+        self.candidates.sort()  # Sort the candidates
 
         running_list = []
-        backtrack(0, 0) # Backtracking solution
+        backtrack(0, 0)  # Backtracking solution
         return self.answer_li
 
     def firstMissingPositive(self, nums: list[int]) -> int:
@@ -1052,10 +1060,10 @@ class Solution:
         # Use a set to keep track of the numbers for fastest lookup.
         # Go up to the length of the array, and if the number isn't in the set, return it. Otherwise return the length+1
         s_nums = set(nums)
-        for i in range(1, len(nums)+1):
+        for i in range(1, len(nums) + 1):
             if i not in s_nums:
                 return i
-        return i+1
+        return i + 1
 
     def trap(self, height: list[int]) -> int:
         """LeetCode #42: Trapping Rain Water.
@@ -1066,23 +1074,25 @@ class Solution:
         # Then, we can compare the forward and backward arrays, and add the min of the two to the total.
         # The "highest" wall from the left will be the max of forward, and the "highest" wall from the right will be the max of backward, then we can add the min of the two since you can't go above the lower wall.
 
-        h_len = len(height) # How long is array
-        forward = [0]*h_len # Forward array
-        backward = [0]*h_len # Backward array
-        max_val_f = 0 # Max value as we walk forward
-        max_val_r = 0 # Max value as we walk backward
-        total = 0 # Total "water" held
+        h_len = len(height)  # How long is array
+        forward = [0] * h_len  # Forward array
+        backward = [0] * h_len  # Backward array
+        max_val_f = 0  # Max value as we walk forward
+        max_val_r = 0  # Max value as we walk backward
+        total = 0  # Total "water" held
 
-        for i in range(h_len): # Loop through array
-            max_val_f = max(max_val_f, height[i]) # Get max value, forward
-            forward[i] = max_val_f # Add max value to forward array
-            max_val_r = max(max_val_r, height[h_len-i-1]) # Get max value, backward.
-            backward[i] = max_val_r # Add max value to backward array
+        for i in range(h_len):  # Loop through array
+            max_val_f = max(max_val_f, height[i])  # Get max value, forward
+            forward[i] = max_val_f  # Add max value to forward array
+            max_val_r = max(max_val_r, height[h_len - i - 1])  # Get max value, backward.
+            backward[i] = max_val_r  # Add max value to backward array
 
-        backward = backward[::-1] # Reverse, for easy comparison of i values
+        backward = backward[::-1]  # Reverse, for easy comparison of i values
 
         for i in range(len(height)):
-            total += max(0, min(forward[i], backward[i]) - height[i]) # Add to total. Min of forward and backward - current height. 0 if less than 0
+            total += max(
+                0, min(forward[i], backward[i]) - height[i]
+            )  # Add to total. Min of forward and backward - current height. 0 if less than 0
         return total
 
     def multiply(self, num1: str, num2: str) -> str:
@@ -1095,28 +1105,28 @@ class Solution:
         # Use two for loops, one for each number, to get the value of each digit and multiply them.
         # Sum it up, and return as a string
 
-        lookup_val = {"1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9, "0":0}
-        new_val = 0 # summation of the new value
-        num1_len = len(num1) # readability
-        num2_len = len(num2) # readability
+        lookup_val = {"1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "0": 0}
+        new_val = 0  # summation of the new value
+        num1_len = len(num1)  # readability
+        num2_len = len(num2)  # readability
 
         if "0" in [num1, num2]:
-            return "0" # if one of the numbers is 0, return 0
+            return "0"  # if one of the numbers is 0, return 0
 
         # For each digit in each number, convert it to an int by looking it up in the dict.
         # Then multiply these values and add them to the new value.
         # Use the i and j variables to keep track of the position of the digits.
         for i in range(num1_len):
             for j in range(num2_len):
-                num1_ch = lookup_val[num1[num1_len-i-1]] # Get the value of the digit with dict lookups.
-                num2_ch = lookup_val[num2[num2_len-j-1]]
+                num1_ch = lookup_val[num1[num1_len - i - 1]]  # Get the value of the digit with dict lookups.
+                num2_ch = lookup_val[num2[num2_len - j - 1]]
                 """ Alternate way to get the value of the digit:
                 num1_ch = ord(num1[num1_len-i-1]) - 48
                 num2_ch = ord(num2[num2_len-j-1]) - 48
                 """
-                new_val+= num1_ch*num2_ch*10**(i+j)
+                new_val += num1_ch * num2_ch * 10 ** (i + j)
         """return str(int(num1)*int(num2)) <-- This is the "ignore the rules" way of doing it everyone seems to do."""
-        return str(new_val) # return the new value
+        return str(new_val)  # return the new value
 
 
     """def isMatch(self, s: str, p: str) -> bool: #TODO(#2): Try without fnmatch
@@ -1133,13 +1143,15 @@ class Solution:
         """
         # Alright, admittedly not the most optimized, but it works.
         # The idea is to use a set to keep track of the indexes we've already visited, and then use a while loop to keep generating indexes until we reach the last index.
-        if len(nums) <=1: # Edge case
+        if len(nums) <= 1:  # Edge case
             return 0
-        ix = {0} # Set to keep track of indexes
-        count = 0 # Loop #
-        while len(nums)-1 not in ix:
-            count+=1 # Add to the loop count
-            ix = {i+j for i in ix for j in range(1, nums[i]+1)} # Generate new indexes we can reach with this count of jumps
+        ix = {0}  # Set to keep track of indexes
+        count = 0  # Loop #
+        while len(nums) - 1 not in ix:
+            count += 1  # Add to the loop count
+            ix = {
+                i + j for i in ix for j in range(1, nums[i] + 1)
+            }  # Generate new indexes we can reach with this count of jumps
         return count
 
     def permute(self, nums: list[int]) -> list[list[int]]: #TODO(#3): Try without itertools
@@ -1165,7 +1177,7 @@ class Solution:
         """
         # Swap row & column, iterating backwards for columns to serve as the reversal.
         # Need to do matrix[:] to make the swap inplace
-        matrix[:] = [[matrix[j][i] for j in range(len(matrix)-1, -1, -1)] for i in range(len(matrix[0]))]
+        matrix[:] = [[matrix[j][i] for j in range(len(matrix) - 1, -1, -1)] for i in range(len(matrix[0]))]
 
         """Alternate way:
         matrix.reverse() # Reverse the matrix
@@ -1182,10 +1194,10 @@ class Solution:
         # Convert everything to it's sorted version. Anagrams will have the same sorted version.
         # Generate a dict with the sorted string as the key, and the list of anagrams as the value
         di = {}
-        for ea in strs: # Iterate through each string
-            sorted_string = "".join(sorted(ea)) # Get the sorted string (anagrams will have the same sorted string)
-            di[sorted_string] = [*di.get(sorted_string, []), ea] # Add to the dict, using the sorted string as the key
-        return list(di.values()) # Return the values, as a list of lists.
+        for ea in strs:  # Iterate through each string
+            sorted_string = "".join(sorted(ea))  # Get the sorted string (anagrams will have the same sorted string)
+            di[sorted_string] = [*di.get(sorted_string, []), ea]  # Add to the dict, using the sorted string as the key
+        return list(di.values())  # Return the values, as a list of lists.
 
     def myPow(self, x: float, n: int) -> float: #TODO(#6): Solve the intended way
         """LeetCode #50: Pow(x, n).
@@ -1207,16 +1219,20 @@ class Solution:
         col_tf = [False] * n
         diag1_tf = [False] * (2 * n)
         diag2_tf = [False] * (2 * n)
-        board = [["." for i in range(n)] for _ in range(n)] # Empty board. We're not actually tracking the queens here, it's just for display
+        board = [
+            ["." for i in range(n)] for _ in range(n)
+        ]  # Empty board. We're not actually tracking the queens here, it's just for display
 
         def _brute_force(row):
             if row == n:
-                solution.append(["".join(row_list) for row_list in board]) # Add the board to the solution
+                solution.append(["".join(row_list) for row_list in board])  # Add the board to the solution
                 return
-            for col in range(n): # Iterate through each column to place the queen
-                if row_tf[row] or col_tf[col] or diag1_tf[row - col] or diag2_tf[row + col]: # Check if any row/col/diag already has a queen
-                    continue # skip if so
-                board[row][col] = "Q" # Try placing queen
+            for col in range(n):  # Iterate through each column to place the queen
+                if (
+                    row_tf[row] or col_tf[col] or diag1_tf[row - col] or diag2_tf[row + col]
+                ):  # Check if any row/col/diag already has a queen
+                    continue  # skip if so
+                board[row][col] = "Q"  # Try placing queen
                 # Update the row/col/diags
                 row_tf[row] = True
                 col_tf[col] = True
@@ -1233,7 +1249,7 @@ class Solution:
                 diag1_tf[row - col] = False
                 diag2_tf[row + col] = False
 
-        _brute_force(0) # Start at row 0
+        _brute_force(0)  # Start at row 0
         return solution
 
     def totalNQueens(self, n: int) -> int:
@@ -1250,20 +1266,21 @@ class Solution:
         Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
         """
         # Iterate through - if the running total ever hits negative (aka, won't make anything else added bigger), reset. Return the maximum running total found.
-        if max(nums) < 0: # If all negative, return the max
+        if max(nums) < 0:  # If all negative, return the max
             return max(nums)
         tot = 0
-        max_tot = -1E5
-        for ea in nums: # Iterate through each element
-            tot = max(tot + ea, 0) # Update the running total
-            max_tot = max(max_tot, tot) # Update the max
-        return max_tot # Return the max
+        max_tot = -1e5
+        for ea in nums:  # Iterate through each element
+            tot = max(tot + ea, 0)  # Update the running total
+            max_tot = max(max_tot, tot)  # Update the max
+        return max_tot  # Return the max
 
     def spiralOrder(self, matrix: list[list[int]]) -> list[int]:
         """LeetCode #54: Spiral Matrix.
 
         Given an m x n matrix, return all elements of the matrix in spiral order.
         """
+
         # Can use the logic from the rotate above -> Move the matrix counterclockwise & keep taking the top row off.abs
         def rotate_clockwise(matrix):
             """Flips a matrix 90 degrees clockwise."""
@@ -1272,11 +1289,14 @@ class Solution:
         def rotate_counterclockwise(matrix):
             """Flips a matrix 90 degrees counterclockwise."""
             return list(zip(*matrix))[::-1]
+
         ans = []
-        while len(matrix) > 0: # While there's original matrix left
-            ans+=matrix[0] # Add the top row
-            matrix = rotate_counterclockwise(matrix[1:]) #Remove top row & rotate 90degrees, to get the next side to add
-        return ans # Once done, return the list.
+        while len(matrix) > 0:  # While there's original matrix left
+            ans += matrix[0]  # Add the top row
+            matrix = rotate_counterclockwise(
+                matrix[1:]
+            )  # Remove top row & rotate 90degrees, to get the next side to add
+        return ans  # Once done, return the list.
 
     def canJump(self, nums: list[int]) -> bool: # TODO(#7): Implement
         """LeetCode #55: Jump Game.
@@ -1292,19 +1312,20 @@ class Solution:
 
         Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
         """
+
         # Sort the intervals by start, then check for overlaps (if the end of the previous interval is >= the start of the next interval).
         def overlaps(x, y):
-            return max(x[0],y[0]) <= min(x[1],y[1])
+            return max(x[0], y[0]) <= min(x[1], y[1])
 
-        intervals = sorted(intervals)# Sort
+        intervals = sorted(intervals)  # Sort
 
-        ans = [intervals[0]] # Add the first
+        ans = [intervals[0]]  # Add the first
 
-        for ea in intervals[1:]: # Iterate each interval
-            if overlaps(ea, ans[-1]): # If overlap
-                ans[-1][1] = max(ans[-1][1], ea[1]) # Update the end of the last interval with the new end
+        for ea in intervals[1:]:  # Iterate each interval
+            if overlaps(ea, ans[-1]):  # If overlap
+                ans[-1][1] = max(ans[-1][1], ea[1])  # Update the end of the last interval with the new end
             else:
-                ans.append(ea) # Add the new interval if no overlap
+                ans.append(ea)  # Add the new interval if no overlap
         return ans
 
     def insert(self, intervals: list[list[int]], newInterval: list[int]) -> list[list[int]]:  # noqa: N803
@@ -1321,28 +1342,29 @@ class Solution:
         Given a string s consisting of some words separated by spaces, return the length of the last word in the string.
         A word is a maximal substring consisting of non-space characters only.
         """
-        rev_s = s[::-1].lstrip() # Reverse & remove leading whitespace
-        words = rev_s.split(" ") # Split into words
-        return len(words[0]) # Return the length of the last word
+        rev_s = s[::-1].lstrip()  # Reverse & remove leading whitespace
+        words = rev_s.split(" ")  # Split into words
+        return len(words[0])  # Return the length of the last word
 
     def generateMatrix(self, n: int) -> list[list[int]]:
         """LeetCode #59: Spiral Matrix II.
 
         Given a positive integer n, generate an n x n matrix filled with elements from 1 to n^2 in spiral order.
         """
+
         # Same logic as Spiral Matrix, but opposite. Start from a single cell & add to the outside, rotating clockwise each time.
         def rotate_clockwise(matrix):
             """Flips a matrix 90 degrees clockwise."""
             return list(zip(*matrix[::-1]))
 
         i = n**2
-        matrix = [[i]] # Start with a single cell
-        while i > 1: # While there's more to add
-            for row in range(len(matrix)): # Iterate through each row
-                i-=1 # Decrement
+        matrix = [[i]]  # Start with a single cell
+        while i > 1:  # While there's more to add
+            for row in range(len(matrix)):  # Iterate through each row
+                i -= 1  # Decrement
                 matrix[row] = [i] + list(matrix[row])  # Add to the left of each row. # noqa: RUF005
-            matrix = rotate_clockwise(matrix) # Rotate clockwise to start next iteration
-        return matrix # Multiples of 4, so end up oriented right.
+            matrix = rotate_clockwise(matrix)  # Rotate clockwise to start next iteration
+        return matrix  # Multiples of 4, so end up oriented right.
 
     def getPermutation(self, n: int, k: int) -> str: #TODO(#8): Implement
         """LeetCode #60: Permutation Sequence.
@@ -1640,7 +1662,7 @@ class Solution:
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
 
-    def isMatch(self, s: str, p: str) -> bool: #TODO(#2): Try without fnmatch
+    def isMatch(self, s: str, p: str) -> bool:  # TODO(#2): Try without fnmatch
         """LeetCode #44: Wildcard Matching.
 
         Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*'.
@@ -1648,21 +1670,21 @@ class SolutionButCheeky:
         '*' Matches any sequence of characters (including the empty sequence).
         The matching should cover the entire input string (not partial).
         """
-        return fnmatch.fnmatch(s, p) # Yeah, i'm feeling cheeky
+        return fnmatch.fnmatch(s, p)  # Yeah, i'm feeling cheeky
 
-    def permute(self, nums: list[int]) -> list[list[int]]: #TODO(#3): Try without itertools
+    def permute(self, nums: list[int]) -> list[list[int]]:  # TODO(#3): Try without itertools
         """LeetCode #46: Permutations.
 
         Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
         """
-        return list(itertools.permutations(nums)) # Easy peasy when you don't care about intention
+        return list(itertools.permutations(nums))  # Easy peasy when you don't care about intention
 
-    def permuteUnique(self, nums: list[int]) -> list[list[int]]: #TODO(#4): Try without itertools
+    def permuteUnique(self, nums: list[int]) -> list[list[int]]:  # TODO(#4): Try without itertools
         """LeetCode #47: Permutations II.
 
         Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
         """
-        return list(set(itertools.permutations(nums))) # Easy peasy when you don't care about intention
+        return list(set(itertools.permutations(nums)))  # Easy peasy when you don't care about intention
 
     def myPow(self, x: float, n: int) -> float:
         """LeetCode #50: Pow(x, n).
@@ -1672,7 +1694,8 @@ class SolutionButCheeky:
         # Did not quite get why this was so hard, it's just x**n?
         if x == 1 or n == 0:
             return 1
-        return x**n # Easy peasy
+        return x**n  # Easy peasy
+
 
     def search_alt(self, nums: list[int], target: int) -> int:
         """LeetCode #33: Search in Rotated Sorted Array.
@@ -1692,16 +1715,20 @@ class SolutionButAlreadyUsedTheName:
         col_used = set()
         diag1_used = set()
         diag2_used = set()
-        board = [["." for i in range(n)] for _ in range(n)] # Empty board. We're not actually tracking the queens here, it's just for display
+        board = [
+            ["." for i in range(n)] for _ in range(n)
+        ]  # Empty board. We're not actually tracking the queens here, it's just for display
 
         def _brute_force(row):
             if row == n:
-                solution.append(["".join(row_list) for row_list in board]) # Add the board to the solution
+                solution.append(["".join(row_list) for row_list in board])  # Add the board to the solution
                 return
-            for col in range(n): # Iterate through each column to place the queen
-                if row in row_used or col in col_used or row - col in diag1_used or row + col in diag2_used: # Check if any row/col/diag already has a queen
-                    continue # skip if so
-                board[row][col] = "Q" # Try placing queen
+            for col in range(n):  # Iterate through each column to place the queen
+                if (
+                    row in row_used or col in col_used or row - col in diag1_used or row + col in diag2_used
+                ):  # Check if any row/col/diag already has a queen
+                    continue  # skip if so
+                board[row][col] = "Q"  # Try placing queen
                 # Update the row/col/diags
                 row_used.add(row)
                 col_used.add(col)
@@ -1718,8 +1745,9 @@ class SolutionButAlreadyUsedTheName:
                 diag1_used.remove(row - col)
                 diag2_used.remove(row + col)
 
-        _brute_force(0) # Start at row 0
+        _brute_force(0)  # Start at row 0
         return solution
+
 
 if __name__ == "__main__":
     sol = Solution()

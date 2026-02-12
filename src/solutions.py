@@ -837,14 +837,6 @@ class Solution:
 
         return left_point if nums[left_point] == target else -1  # Return the index if it's the target, else -1
 
-    def search_alt(self, nums: list[int], target: int) -> int:
-        """LeetCode #33: Search in Rotated Sorted Array.
-
-        Original solution
-        """
-        return (
-            nums.index(target) if target in nums else -1
-        )  # Okay, so this is maybe overly simple for the intended application, and doesn't meet the complexity requirements (but does pass the submission tests)
 
     def searchRange(self, nums: list[int], target: int) -> list[int]:
         """LeetCode #34: Find First and Last Position of Element in Sorted Array.
@@ -1000,7 +992,12 @@ class Solution:
         return answer
 
     def combinationSum(self, candidates: list[int], target: int) -> list[list[int]]:
+        """LeetCode #39: Combination Sum.
 
+        Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
+        The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.
+        It is guaranteed that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+        """
         def backtrack(total, running_list, ix):
             if total == self.target: # If you've found a total, add the list & stop
                 self.answer_li.append(running_list)
@@ -1121,6 +1118,12 @@ class Solution:
         """return str(int(num1)*int(num2)) <-- This is the "ignore the rules" way of doing it everyone seems to do."""
         return str(new_val) # return the new value
 
+
+    """def isMatch(self, s: str, p: str) -> bool: #TODO(#2): Try without fnmatch
+        # LeetCode #44: Wildcard Matching
+        return False"""
+
+
     def jump(self, nums: list[int]) -> int:
         """LeetCode #45: Jump Game II.
 
@@ -1138,6 +1141,20 @@ class Solution:
             count+=1 # Add to the loop count
             ix = {i+j for i in ix for j in range(1, nums[i]+1)} # Generate new indexes we can reach with this count of jumps
         return count
+
+    def permute(self, nums: list[int]) -> list[list[int]]: #TODO(#3): Try without itertools
+        """LeetCode #46: Permutations.
+
+        Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+        """
+        return list(itertools.permutations(nums))
+
+    def permuteUnique(self, nums: list[int]) -> list[list[int]]: #TODO(#4): Try without itertools
+        """LeetCode #47: Permutations II.
+
+        Given an array of distinct integers nums, return all the possible permutations. You can return the answer in any order.
+        """
+        return list(set(itertools.permutations(nums)))
 
     def rotate(self, matrix: list[list[int]]) -> None:
         """Leetcode #48: Rotate Image.
@@ -1169,6 +1186,13 @@ class Solution:
             sorted_string = "".join(sorted(ea)) # Get the sorted string (anagrams will have the same sorted string)
             di[sorted_string] = [*di.get(sorted_string, []), ea] # Add to the dict, using the sorted string as the key
         return list(di.values()) # Return the values, as a list of lists.
+
+    def myPow(self, x: float, n: int) -> float: #TODO(#6): Solve the intended way
+        """LeetCode #50: Pow(x, n).
+
+        Implement pow(x, n), which calculates x raised to the power n.
+        """
+        return 1 if x == 1 or n == 0 else x**n
 
     def solveNQueens(self, n: int) -> list[list[str]]:
         """LeetCode #51: N-Queens.
@@ -1254,6 +1278,15 @@ class Solution:
             matrix = rotate_counterclockwise(matrix[1:]) #Remove top row & rotate 90degrees, to get the next side to add
         return ans # Once done, return the list.
 
+    def canJump(self, nums: list[int]) -> bool: # TODO(#7): Implement
+        """LeetCode #55: Jump Game.
+
+        You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+        Return true if you can reach the last index, or false otherwise.
+        """
+        return None
+
+
     def merge(self, intervals: list[list[int]]) -> list[list[int]]:
         """LeetCode #56: Merge Intervals.
 
@@ -1311,117 +1344,21 @@ class Solution:
             matrix = rotate_clockwise(matrix) # Rotate clockwise to start next iteration
         return matrix # Multiples of 4, so end up oriented right.
 
-    def plusOne(self, digits: list[int]) -> list[int]:
-        """LeetCode #66: Plus One.
+    def getPermutation(self, n: int, k: int) -> str: #TODO(#8): Implement
+        """LeetCode #60: Permutation Sequence.
 
-        Given a non-empty array of digits representing a non-negative integer, plus one to the integer.
-        The digits are stored such that the most significant digit is at the head of the list, and each element in the array contain a single digit.
-        You may assume the integer does not contain any leading zero, except the number 0 itself.
+        The set [1,2,3,...,n] contains a total of n! unique permutations.
+        By listing and labeling all of the permutations in order, we get the following sequence for n = 3:
+        "123"
+        "132"
+        "213"
+        "231"
+        "312"
+        "321"
+        Given n and k, return the kth permutation sequence.
         """
-        # Add 1 to the last digit. Then walk the array backwards, if the current digit is > 9, add 1 to the next digit.
-        new = digits
-        new[-1] += 1
-        for i in range(len(digits)-1,-1,-1): # Walk backwards
-            if len(str(digits[i])) != 1: # If the current digit is > 9
-                digits[i] = 0 # Set it to 0
-                if i == 0: # If it's the first digit
-                    new.insert(0,1) # Add a 1
-                else:
-                    digits[i-1] += 1 # Add 1 to the next digit
-            else:
-                return new # We're done
-        return new
+        return None
 
-    def addBinary(self, a: str, b: str) -> str:
-        """LeetCode #67: Add Binary.
-
-        Given two binary strings a and b, return their sum as a binary string.
-        """
-        # Get them the same length & walk through the binary math )
-        diff = len(a)-len(b) # Get the difference in length
-        ans = "" # Start with an empty string
-        c = "0" # Set the carry to 0
-
-        if diff > 0: # If a is longer, pad b
-            b = "0"*diff+b
-        else: # If b is longer, pad a
-            a = "0"*-diff+a
-
-        # Iterate through the strings
-        for i in range(len(a)-1, -1, -1):
-            a1 = a[i] == "1"
-            b1 = b[i] == "1"
-            c = c == "1"
-            ct = sum([a1, b1, c]) # Count the number of 1s
-
-            if  ct >= 3: # If there are 3 or more 1s  # noqa: PLR2004
-                ans = "1" + ans
-                c = "1"
-            elif ct >= 2: # If there are 2 or more 1s  # noqa: PLR2004
-                ans = "0" + ans
-                c = "1"
-            elif ct >= 1: # If there is 1 or more 1s
-                ans = "1" + ans
-                c = "0"
-            else: # If there are no 1s
-                ans = "0" + ans
-                c = "0"
-        if c == "1": # If there is a carry at the end of processing
-            ans = "1" + ans
-        return ans
-
-    def climbStairs(self, n: int) -> int:
-        """LeetCode #70: Climbing Stairs.
-
-        You are climbing a staircase. It takes n steps to reach the top.
-        Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
-        """
-        # 1 - 1 way
-        # 2 - 2 ways
-        # 3 - 3 ways (1+1+1, 2+1, 1+2)
-        # 4 - 5 ways (1+1+1+1, 1+2+1, 2+2, 1+1+2, 2+1+1)
-        # It's just expanding the fibonacci sequence
-        return util.nth_fibonacci(n)
-
-    def simplifyPath(self, path: str) -> str:
-        """LeetCode #71: Simplify Path.
-
-        Given a string path, which is an absolute path (starting with a slash '/') to a file or directory in a Unix-style file system, convert it to the simplified canonical path.
-        """
-        # Split the string by "/", then walk through it
-        new_path = r"/"
-        for p in path.split("/"):
-            if p == "..": # Go up indicator
-                new_path = "/".join(new_path.split("/")[:-2]) + "/" # Go up a level
-            elif p in {".", ""}: # Ignore these
-                continue
-            else: # Standard case
-                new_path += p + "/"
-        return new_path if new_path[-1] != "/" or len(new_path)==1 else new_path[:-1] # Remove trailing slash, unless it's root
-
-    def deleteDuplicates(self, head: [ListNode] | None) -> [ListNode] | None:
-        """LeetCode #83: Remove Duplicates from Sorted List.
-
-        Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
-        """
-        base = ListNode()
-        current_node = base
-        last_digit = -101 # Somehting we wouldn't see
-
-        if head is None: #Before we get a bunch of errors, check edge cases
-            return head
-
-        while head:
-            digit = head.val if head else None # Get the next digit to check
-            if digit is None:
-                return base.next
-            if last_digit != digit: # New digit
-                current_node.next = ListNode(digit) # Set it
-                current_node = current_node.next # Advance it
-            head = head.next if head else None #Get the next main list item to check
-            last_digit = digit # Update the trailing value
-
-        return base.next
 
     def rotateRight(self, head: [ListNode] | None, k: int) -> [ListNode] | None:
         """LeetCode #61: Rotate List.
@@ -1557,6 +1494,147 @@ class Solution:
             return False
         return not ("e" in self.s and not check_e()) # If the number has an e and the number is not valid around e, invalid
 
+    def plusOne(self, digits: list[int]) -> list[int]:
+        """LeetCode #66: Plus One.
+
+        Given a non-empty array of digits representing a non-negative integer, plus one to the integer.
+        The digits are stored such that the most significant digit is at the head of the list, and each element in the array contain a single digit.
+        You may assume the integer does not contain any leading zero, except the number 0 itself.
+        """
+        # Add 1 to the last digit. Then walk the array backwards, if the current digit is > 9, add 1 to the next digit.
+        new = digits
+        new[-1] += 1
+        for i in range(len(digits)-1,-1,-1): # Walk backwards
+            if len(str(digits[i])) != 1: # If the current digit is > 9
+                digits[i] = 0 # Set it to 0
+                if i == 0: # If it's the first digit
+                    new.insert(0,1) # Add a 1
+                else:
+                    digits[i-1] += 1 # Add 1 to the next digit
+            else:
+                return new # We're done
+        return new
+
+    def addBinary(self, a: str, b: str) -> str:
+        """LeetCode #67: Add Binary.
+
+        Given two binary strings a and b, return their sum as a binary string.
+        """
+        # Get them the same length & walk through the binary math )
+        diff = len(a)-len(b) # Get the difference in length
+        ans = "" # Start with an empty string
+        c = "0" # Set the carry to 0
+
+        if diff > 0: # If a is longer, pad b
+            b = "0"*diff+b
+        else: # If b is longer, pad a
+            a = "0"*-diff+a
+
+        # Iterate through the strings
+        for i in range(len(a)-1, -1, -1):
+            a1 = a[i] == "1"
+            b1 = b[i] == "1"
+            c = c == "1"
+            ct = sum([a1, b1, c]) # Count the number of 1s
+
+            if  ct >= 3: # If there are 3 or more 1s  # noqa: PLR2004
+                ans = "1" + ans
+                c = "1"
+            elif ct >= 2: # If there are 2 or more 1s  # noqa: PLR2004
+                ans = "0" + ans
+                c = "1"
+            elif ct >= 1: # If there is 1 or more 1s
+                ans = "1" + ans
+                c = "0"
+            else: # If there are no 1s
+                ans = "0" + ans
+                c = "0"
+        if c == "1": # If there is a carry at the end of processing
+            ans = "1" + ans
+        return ans
+
+    def fullJustify(self, words: list[str], maxWidth: int) -> list[str]: #TODO(#68): Solve  # noqa: N803
+        """LeetCode #68: Text Justification.
+
+        Given an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.
+        """
+        return None
+
+    def mySqrt(self, x: int) -> int: #TODO(#10): Solve
+        """LeetCode #69: Sqrt(x).
+
+        Given a non-negative integer x, compute and return the square root of x.
+        Since the return type is an integer, the decimal digits are truncated, and only the integer part of the result is returned.
+        """
+        n = 1
+        while n*n <= x:
+            n+=1
+        return n-1
+
+    def climbStairs(self, n: int) -> int:
+        """LeetCode #70: Climbing Stairs.
+
+        You are climbing a staircase. It takes n steps to reach the top.
+        Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+        """
+        # 1 - 1 way
+        # 2 - 2 ways
+        # 3 - 3 ways (1+1+1, 2+1, 1+2)
+        # 4 - 5 ways (1+1+1+1, 1+2+1, 2+2, 1+1+2, 2+1+1)
+        # It's just expanding the fibonacci sequence
+        return util.nth_fibonacci(n)
+
+    def simplifyPath(self, path: str) -> str:
+        """LeetCode #71: Simplify Path.
+
+        Given a string path, which is an absolute path (starting with a slash '/') to a file or directory in a Unix-style file system, convert it to the simplified canonical path.
+        """
+        # Split the string by "/", then walk through it
+        new_path = r"/"
+        for p in path.split("/"):
+            if p == "..": # Go up indicator
+                new_path = "/".join(new_path.split("/")[:-2]) + "/" # Go up a level
+            elif p in {".", ""}: # Ignore these
+                continue
+            else: # Standard case
+                new_path += p + "/"
+        return new_path if new_path[-1] != "/" or len(new_path)==1 else new_path[:-1] # Remove trailing slash, unless it's root
+
+    # LeetCode #72: Edit Distance
+    # LeetCode #73: Set Matrix Zeroes
+    # LeetCode #74: Search a 2D Matrix
+    # LeetCode #75: Sort Colors
+    # LeetCode #76: Minimum Window Substring
+    # LeetCode #77: Combinations
+    # LeetCode #78: Subsets
+    # LeetCode #79: Word Search
+    # LeetCode #80: Remove Duplicates from Sorted Array II
+    # LeetCode #81: Search in Rotated Sorted Array II
+    # LeetCode #82: Remove Duplicates from Sorted List
+
+    def deleteDuplicates(self, head: [ListNode] | None) -> [ListNode] | None:
+        """LeetCode #83: Remove Duplicates from Sorted List.
+
+        Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
+        """
+        base = ListNode()
+        current_node = base
+        last_digit = -101 # Somehting we wouldn't see
+
+        if head is None: #Before we get a bunch of errors, check edge cases
+            return head
+
+        while head:
+            digit = head.val if head else None # Get the next digit to check
+            if digit is None:
+                return base.next
+            if last_digit != digit: # New digit
+                current_node.next = ListNode(digit) # Set it
+                current_node = current_node.next # Advance it
+            head = head.next if head else None #Get the next main list item to check
+            last_digit = digit # Update the trailing value
+
+        return base.next
 
 
 class SolutionButCheeky:
@@ -1595,6 +1673,15 @@ class SolutionButCheeky:
         if x == 1 or n == 0:
             return 1
         return x**n # Easy peasy
+
+    def search_alt(self, nums: list[int], target: int) -> int:
+        """LeetCode #33: Search in Rotated Sorted Array.
+
+        Original solution
+        """
+        return (
+            nums.index(target) if target in nums else -1
+        )  # Okay, so this is maybe overly simple for the intended application, and doesn't meet the complexity requirements (but does pass the submission tests)
 
 class SolutionButAlreadyUsedTheName:
     """Same as Solution, but separated for the already used names."""

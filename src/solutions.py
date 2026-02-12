@@ -1522,6 +1522,43 @@ class Solution:
             for j in range(1, cols):
                 grid[i][j] += min(grid[i-1][j], grid[i][j-1]) # Find min of up & left, add it to current cells value. Since we're going down & right, we'll have already compiled both those previously
         return grid[-1][-1] # Last cell
+
+    def isNumber(self, s: str) -> bool:
+        """LeetCode #65: Valid Number.
+
+        Given a string s, determine if it is a number.
+        """
+        # This is sloppy, but it works?
+        # Test cases could use some work, but this met the requirements as posted.
+        def check_dot(): # Check if the number is valid around decimals
+            print(self.s)
+            if len(self.s) == 1 or util.ch_ct_str(self.s, ".") > 1:
+                return False
+            return not ("e" in self.s and self.s.find("e") < self.s.find("."))
+
+        def check_e(): # Check if the number is valid around e
+            if len(self.s) == 1 or util.ch_ct_str(self.s, "e") > 1:
+                return False
+            li = self.s.split("e")
+            return (self.isNumber(li[0]) and self.isNumber(li[1]))
+
+        def remove_plus_minus(s): # Remove any plus or minus signs at the beginning, or around e
+            new_s = ""
+            for i in range(len(s)):
+                if (s[i] == "+" or s[i] == "-") and (i == 0 or s[i-1] == "e"):
+                    continue
+                new_s+=s[i]
+            return new_s
+
+        self.s = remove_plus_minus(s.lower()) # Remove any plus or minus signs at the beginning, or around e
+        if util.check_any(self.s, "abcdfghijklmnopqrstuvwxyz+-") or self.s == "": # If the string contains any letters, any more +/-, or is empty, invalid.
+            return False
+        if "." in self.s and not check_dot(): # If the number has a decimal and the number is not valid around decimals, invalid
+            return False
+        return not ("e" in self.s and not check_e()) # If the number has an e and the number is not valid around e, invalid
+
+
+
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
 

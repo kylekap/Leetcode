@@ -1575,12 +1575,44 @@ class Solution:
             ans = "1" + ans
         return ans
 
-    def fullJustify(self, words: list[str], maxWidth: int) -> list[str]: #TODO(#68): Solve  # noqa: N803
+    def fullJustify(self, words: list[str], maxWidth: int) -> list[str]:  # noqa: N803
         """LeetCode #68: Text Justification.
 
         Given an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.
+        You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly maxWidth characters.
+        Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+        For the last line of text, it should be left justified and no extra space is inserted between words.
+        Note: A word is defined as a character string consisting of non-space characters only.
         """
-        return None
+        # Go through and add the words to the line until you would go over max_width. When you do, generate the line's text value & append it to the answer.
+        # For justification, add spaces to the words other than the last one in order until you get to the max_width.
+        def justification(words, max_len):
+            words_ct = len(words)
+            i = 0
+            if words_ct == 1: # If there's only one word, special case to make it left justified
+                return words[0] + " " * (max_len - len(words[0]))
+            while sum([len(word) for word in words]) < max_len: # While the sum of the lengths of the words is less than the max width
+                place = i % (words_ct-1) # Get the index of the word to add a space to
+                i+=1 # Increment
+                words[place] += " " # Add a space
+            return "".join(words) # Join the words to form a string
+
+        line_len = 0
+        ans = []
+        current_line = []
+        for word in words: # Iterate through the words
+            word_len = len(word)
+            if word_len + line_len > maxWidth: # If the line would be too long
+                ans.append(justification(current_line, maxWidth)) # Justify the line & add to answer
+                current_line = [] # Reset the current line
+                line_len = 0 # Reset the line length
+            current_line.append(word) # Add the word to the current running list
+            line_len += word_len+1 # Add the length of the word + 1 for the space
+        # Last line is left justified, so operates differently
+        last_line = " ".join(current_line) # Join the words to form a string
+        last_line = last_line + " " * (maxWidth-len(last_line)) # Pad the last line
+        ans.append(last_line) # Add the last line to the answer
+        return ans
 
     def mySqrt(self, x: int) -> int: #TODO(#10): Solve
         """LeetCode #69: Sqrt(x).

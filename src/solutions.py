@@ -837,7 +837,6 @@ class Solution:
 
         return left_point if nums[left_point] == target else -1  # Return the index if it's the target, else -1
 
-
     def searchRange(self, nums: list[int], target: int) -> list[int]:
         """LeetCode #34: Find First and Last Position of Element in Sorted Array.
 
@@ -1003,6 +1002,7 @@ class Solution:
         The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.
         It is guaranteed that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
         """
+
         def backtrack(total, running_list, ix):
             if total == self.target:  # If you've found a total, add the list & stop
                 self.answer_li.append(running_list)
@@ -1128,11 +1128,9 @@ class Solution:
         """return str(int(num1)*int(num2)) <-- This is the "ignore the rules" way of doing it everyone seems to do."""
         return str(new_val)  # return the new value
 
-
     """def isMatch(self, s: str, p: str) -> bool: #TODO(#2): Try without fnmatch
         # LeetCode #44: Wildcard Matching
         return False"""
-
 
     def jump(self, nums: list[int]) -> int:
         """LeetCode #45: Jump Game II.
@@ -1154,14 +1152,14 @@ class Solution:
             }  # Generate new indexes we can reach with this count of jumps
         return count
 
-    def permute(self, nums: list[int]) -> list[list[int]]: #TODO(#3): Try without itertools
+    def permute(self, nums: list[int]) -> list[list[int]]:  # TODO(#3): Try without itertools
         """LeetCode #46: Permutations.
 
         Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
         """
         return list(itertools.permutations(nums))
 
-    def permuteUnique(self, nums: list[int]) -> list[list[int]]: #TODO(#4): Try without itertools
+    def permuteUnique(self, nums: list[int]) -> list[list[int]]:  # TODO(#4): Try without itertools
         """LeetCode #47: Permutations II.
 
         Given an array of distinct integers nums, return all the possible permutations. You can return the answer in any order.
@@ -1199,7 +1197,7 @@ class Solution:
             di[sorted_string] = [*di.get(sorted_string, []), ea]  # Add to the dict, using the sorted string as the key
         return list(di.values())  # Return the values, as a list of lists.
 
-    def myPow(self, x: float, n: int) -> float: #TODO(#6): Solve the intended way
+    def myPow(self, x: float, n: int) -> float:  # TODO(#6): Solve the intended way
         """LeetCode #50: Pow(x, n).
 
         Implement pow(x, n), which calculates x raised to the power n.
@@ -1298,14 +1296,13 @@ class Solution:
             )  # Remove top row & rotate 90degrees, to get the next side to add
         return ans  # Once done, return the list.
 
-    def canJump(self, nums: list[int]) -> bool: # TODO(#7): Implement
+    def canJump(self, nums: list[int]) -> bool:  # TODO(#7): Implement
         """LeetCode #55: Jump Game.
 
         You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
         Return true if you can reach the last index, or false otherwise.
         """
         return None
-
 
     def merge(self, intervals: list[list[int]]) -> list[list[int]]:
         """LeetCode #56: Merge Intervals.
@@ -1366,7 +1363,7 @@ class Solution:
             matrix = rotate_clockwise(matrix)  # Rotate clockwise to start next iteration
         return matrix  # Multiples of 4, so end up oriented right.
 
-    def getPermutation(self, n: int, k: int) -> str: #TODO(#8): Implement
+    def getPermutation(self, n: int, k: int) -> str:  # TODO(#8): Implement
         """LeetCode #60: Permutation Sequence.
 
         The set [1,2,3,...,n] contains a total of n! unique permutations.
@@ -1381,7 +1378,6 @@ class Solution:
         """
         return None
 
-
     def rotateRight(self, head: [ListNode] | None, k: int) -> [ListNode] | None:
         """LeetCode #61: Rotate List.
 
@@ -1391,26 +1387,26 @@ class Solution:
         base = head
         li_len = 0
 
-        while base: # get length, to see if we have to loop or anything crazy
-            li_len+=1
+        while base:  # get length, to see if we have to loop or anything crazy
+            li_len += 1
             base = base.next
 
-        if not head or li_len == 0 or k%li_len == 0: # Edge cases
+        if not head or li_len == 0 or k % li_len == 0:  # Edge cases
             return head
 
         lead = head
         follow = head
 
-        for _ in range(k % li_len): # Step forward the number of spots you need
+        for _ in range(k % li_len):  # Step forward the number of spots you need
             lead = lead.next
 
-        while lead.next: # Walk forward to get the "follow" point to the right spot in the rotation & "lead" pointer at the end of the linked list, for easy attachment to beginning
+        while lead.next:  # Walk forward to get the "follow" point to the right spot in the rotation & "lead" pointer at the end of the linked list, for easy attachment to beginning
             lead = lead.next
             follow = follow.next
 
-        ans = follow.next # create ans
-        follow.next = None # break connection in the second part
-        lead.next = head # connect back to front
+        ans = follow.next  # create ans
+        follow.next = None  # break connection in the second part
+        lead.next = head  # connect back to front
         return ans
 
     def uniquePaths(self, m: int, n: int) -> int:
@@ -1420,8 +1416,7 @@ class Solution:
         Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.
         """
         # This is just a binomial coefficient question, so use that. Same kind of issue as Project Euler #15, but with the variable X & Y, and robot starting on the grid (-1's)
-        return int(util.binomial_coefficient(m-1+n-1,n-1))
-
+        return int(util.binomial_coefficient(m - 1 + n - 1, n - 1))
 
     def uniquePathsWithObstacles(self, obstacleGrid: list[list[int]]) -> int:  # noqa: N803
         """LeetCode #63: Unique Paths II.
@@ -1436,29 +1431,31 @@ class Solution:
         rows = len(obstacleGrid)
         cols = len(obstacleGrid[0])
 
-        if (obstacleGrid[-1][-1] == 1 or obstacleGrid[0][0] == 1) \
-            or (rows == 1 and 1 in obstacleGrid[0]) \
-            or (cols == 1 and 1 in obstacleGrid):
+        if (
+            (obstacleGrid[-1][-1] == 1 or obstacleGrid[0][0] == 1)
+            or (rows == 1 and 1 in obstacleGrid[0])
+            or (cols == 1 and 1 in obstacleGrid)
+        ):
             return 0
 
-        for j in range(cols): # First row
+        for j in range(cols):  # First row
             if obstacleGrid[0][j] == 1:
-                break # If the current cell is an obstacle, ignore it & everything across as inaccessible
+                break  # If the current cell is an obstacle, ignore it & everything across as inaccessible
             obstacleGrid[0][j] = -1
 
-        for i in range(rows): # First column
+        for i in range(rows):  # First column
             if obstacleGrid[i][0] == 1:
-                break # If the current cell is an obstacle, ignore it & everything down as inaccessible
+                break  # If the current cell is an obstacle, ignore it & everything down as inaccessible
             obstacleGrid[i][0] = -1
 
         for i in range(1, rows):
             for j in range(1, cols):
                 # If the current cell is an obstacle, ignore it. If BOTH the left & up are obstacles, ignore
-                if (obstacleGrid[i][j] == 1) or (obstacleGrid[i-1][j] == 1 and obstacleGrid[i][j-1] == 1):
+                if (obstacleGrid[i][j] == 1) or (obstacleGrid[i - 1][j] == 1 and obstacleGrid[i][j - 1] == 1):
                     continue
                 # If the current cell is not an obstacle, add the left & up. The min here is because we're all negative, anything positive is "blocked".
-                obstacleGrid[i][j] = min(obstacleGrid[i-1][j],0) + min(obstacleGrid[i][j-1],0)
-        return -1*obstacleGrid[-1][-1]
+                obstacleGrid[i][j] = min(obstacleGrid[i - 1][j], 0) + min(obstacleGrid[i][j - 1], 0)
+        return -1 * obstacleGrid[-1][-1]
 
     def minPathSum(self, grid: list[list[int]]) -> int:
         """LeetCode #64: Minimum Path Sum.
@@ -1467,54 +1464,62 @@ class Solution:
         Note: You can only move either down or right at any point in time.
         """
         # Very similar to approach in #63, but now we have to find the min of the left & up. There's also no obstacles to worry about
-        rows = len(grid) # Number of rows
-        cols = len(grid[0]) # Number of columns
+        rows = len(grid)  # Number of rows
+        cols = len(grid[0])  # Number of columns
 
         # Since they don't have a second cell to add, special cases top row & column
-        for row in range(1, rows): # First row
-            grid[row][0] += grid[row-1][0]
-        for col in range(1, cols): # First column
-            grid[0][col] += grid[0][col-1]
-
+        for row in range(1, rows):  # First row
+            grid[row][0] += grid[row - 1][0]
+        for col in range(1, cols):  # First column
+            grid[0][col] += grid[0][col - 1]
 
         for i in range(1, rows):
             for j in range(1, cols):
-                grid[i][j] += min(grid[i-1][j], grid[i][j-1]) # Find min of up & left, add it to current cells value. Since we're going down & right, we'll have already compiled both those previously
-        return grid[-1][-1] # Last cell
+                grid[i][j] += min(
+                    grid[i - 1][j], grid[i][j - 1]
+                )  # Find min of up & left, add it to current cells value. Since we're going down & right, we'll have already compiled both those previously
+        return grid[-1][-1]  # Last cell
 
     def isNumber(self, s: str) -> bool:
         """LeetCode #65: Valid Number.
 
         Given a string s, determine if it is a number.
         """
+
         # This is sloppy, but it works?
         # Test cases could use some work, but this met the requirements as posted.
-        def check_dot(): # Check if the number is valid around decimals
+        def check_dot():  # Check if the number is valid around decimals
             print(self.s)
             if len(self.s) == 1 or util.ch_ct_str(self.s, ".") > 1:
                 return False
             return not ("e" in self.s and self.s.find("e") < self.s.find("."))
 
-        def check_e(): # Check if the number is valid around e
+        def check_e():  # Check if the number is valid around e
             if len(self.s) == 1 or util.ch_ct_str(self.s, "e") > 1:
                 return False
             li = self.s.split("e")
-            return (self.isNumber(li[0]) and self.isNumber(li[1]))
+            return self.isNumber(li[0]) and self.isNumber(li[1])
 
-        def remove_plus_minus(s): # Remove any plus or minus signs at the beginning, or around e
+        def remove_plus_minus(s):  # Remove any plus or minus signs at the beginning, or around e
             new_s = ""
             for i in range(len(s)):
-                if (s[i] == "+" or s[i] == "-") and (i == 0 or s[i-1] == "e"):
+                if (s[i] == "+" or s[i] == "-") and (i == 0 or s[i - 1] == "e"):
                     continue
-                new_s+=s[i]
+                new_s += s[i]
             return new_s
 
-        self.s = remove_plus_minus(s.lower()) # Remove any plus or minus signs at the beginning, or around e
-        if util.check_any(self.s, "abcdfghijklmnopqrstuvwxyz+-") or self.s == "": # If the string contains any letters, any more +/-, or is empty, invalid.
+        self.s = remove_plus_minus(s.lower())  # Remove any plus or minus signs at the beginning, or around e
+        if (
+            util.check_any(self.s, "abcdfghijklmnopqrstuvwxyz+-") or self.s == ""
+        ):  # If the string contains any letters, any more +/-, or is empty, invalid.
             return False
-        if "." in self.s and not check_dot(): # If the number has a decimal and the number is not valid around decimals, invalid
+        if (
+            "." in self.s and not check_dot()
+        ):  # If the number has a decimal and the number is not valid around decimals, invalid
             return False
-        return not ("e" in self.s and not check_e()) # If the number has an e and the number is not valid around e, invalid
+        return not (
+            "e" in self.s and not check_e()
+        )  # If the number has an e and the number is not valid around e, invalid
 
     def plusOne(self, digits: list[int]) -> list[int]:
         """LeetCode #66: Plus One.
@@ -1526,15 +1531,15 @@ class Solution:
         # Add 1 to the last digit. Then walk the array backwards, if the current digit is > 9, add 1 to the next digit.
         new = digits
         new[-1] += 1
-        for i in range(len(digits)-1,-1,-1): # Walk backwards
-            if len(str(digits[i])) != 1: # If the current digit is > 9
-                digits[i] = 0 # Set it to 0
-                if i == 0: # If it's the first digit
-                    new.insert(0,1) # Add a 1
+        for i in range(len(digits) - 1, -1, -1):  # Walk backwards
+            if len(str(digits[i])) != 1:  # If the current digit is > 9
+                digits[i] = 0  # Set it to 0
+                if i == 0:  # If it's the first digit
+                    new.insert(0, 1)  # Add a 1
                 else:
-                    digits[i-1] += 1 # Add 1 to the next digit
+                    digits[i - 1] += 1  # Add 1 to the next digit
             else:
-                return new # We're done
+                return new  # We're done
         return new
 
     def addBinary(self, a: str, b: str) -> str:
@@ -1543,35 +1548,35 @@ class Solution:
         Given two binary strings a and b, return their sum as a binary string.
         """
         # Get them the same length & walk through the binary math )
-        diff = len(a)-len(b) # Get the difference in length
-        ans = "" # Start with an empty string
-        c = "0" # Set the carry to 0
+        diff = len(a) - len(b)  # Get the difference in length
+        ans = ""  # Start with an empty string
+        c = "0"  # Set the carry to 0
 
-        if diff > 0: # If a is longer, pad b
-            b = "0"*diff+b
-        else: # If b is longer, pad a
-            a = "0"*-diff+a
+        if diff > 0:  # If a is longer, pad b
+            b = "0" * diff + b
+        else:  # If b is longer, pad a
+            a = "0" * -diff + a
 
         # Iterate through the strings
-        for i in range(len(a)-1, -1, -1):
+        for i in range(len(a) - 1, -1, -1):
             a1 = a[i] == "1"
             b1 = b[i] == "1"
             c = c == "1"
-            ct = sum([a1, b1, c]) # Count the number of 1s
+            ct = sum([a1, b1, c])  # Count the number of 1s
 
-            if  ct >= 3: # If there are 3 or more 1s  # noqa: PLR2004
+            if ct >= 3:  # If there are 3 or more 1s  # noqa: PLR2004
                 ans = "1" + ans
                 c = "1"
-            elif ct >= 2: # If there are 2 or more 1s  # noqa: PLR2004
+            elif ct >= 2:  # If there are 2 or more 1s  # noqa: PLR2004
                 ans = "0" + ans
                 c = "1"
-            elif ct >= 1: # If there is 1 or more 1s
+            elif ct >= 1:  # If there is 1 or more 1s
                 ans = "1" + ans
                 c = "0"
-            else: # If there are no 1s
+            else:  # If there are no 1s
                 ans = "0" + ans
                 c = "0"
-        if c == "1": # If there is a carry at the end of processing
+        if c == "1":  # If there is a carry at the end of processing
             ans = "1" + ans
         return ans
 
@@ -1584,46 +1589,49 @@ class Solution:
         For the last line of text, it should be left justified and no extra space is inserted between words.
         Note: A word is defined as a character string consisting of non-space characters only.
         """
+
         # Go through and add the words to the line until you would go over max_width. When you do, generate the line's text value & append it to the answer.
         # For justification, add spaces to the words other than the last one in order until you get to the max_width.
         def justification(words, max_len):
             words_ct = len(words)
             i = 0
-            if words_ct == 1: # If there's only one word, special case to make it left justified
+            if words_ct == 1:  # If there's only one word, special case to make it left justified
                 return words[0] + " " * (max_len - len(words[0]))
-            while sum([len(word) for word in words]) < max_len: # While the sum of the lengths of the words is less than the max width
-                place = i % (words_ct-1) # Get the index of the word to add a space to
-                i+=1 # Increment
-                words[place] += " " # Add a space
-            return "".join(words) # Join the words to form a string
+            while (
+                sum([len(word) for word in words]) < max_len
+            ):  # While the sum of the lengths of the words is less than the max width
+                place = i % (words_ct - 1)  # Get the index of the word to add a space to
+                i += 1  # Increment
+                words[place] += " "  # Add a space
+            return "".join(words)  # Join the words to form a string
 
         line_len = 0
         ans = []
         current_line = []
-        for word in words: # Iterate through the words
+        for word in words:  # Iterate through the words
             word_len = len(word)
-            if word_len + line_len > maxWidth: # If the line would be too long
-                ans.append(justification(current_line, maxWidth)) # Justify the line & add to answer
-                current_line = [] # Reset the current line
-                line_len = 0 # Reset the line length
-            current_line.append(word) # Add the word to the current running list
-            line_len += word_len+1 # Add the length of the word + 1 for the space
+            if word_len + line_len > maxWidth:  # If the line would be too long
+                ans.append(justification(current_line, maxWidth))  # Justify the line & add to answer
+                current_line = []  # Reset the current line
+                line_len = 0  # Reset the line length
+            current_line.append(word)  # Add the word to the current running list
+            line_len += word_len + 1  # Add the length of the word + 1 for the space
         # Last line is left justified, so operates differently
-        last_line = " ".join(current_line) # Join the words to form a string
-        last_line = last_line + " " * (maxWidth-len(last_line)) # Pad the last line
-        ans.append(last_line) # Add the last line to the answer
+        last_line = " ".join(current_line)  # Join the words to form a string
+        last_line = last_line + " " * (maxWidth - len(last_line))  # Pad the last line
+        ans.append(last_line)  # Add the last line to the answer
         return ans
 
-    def mySqrt(self, x: int) -> int: #TODO(#10): Solve
+    def mySqrt(self, x: int) -> int:  # TODO(#10): Solve
         """LeetCode #69: Sqrt(x).
 
         Given a non-negative integer x, compute and return the square root of x.
         Since the return type is an integer, the decimal digits are truncated, and only the integer part of the result is returned.
         """
         n = 1
-        while n*n <= x:
-            n+=1
-        return n-1
+        while n * n <= x:
+            n += 1
+        return n - 1
 
     def climbStairs(self, n: int) -> int:
         """LeetCode #70: Climbing Stairs.
@@ -1646,13 +1654,15 @@ class Solution:
         # Split the string by "/", then walk through it
         new_path = r"/"
         for p in path.split("/"):
-            if p == "..": # Go up indicator
-                new_path = "/".join(new_path.split("/")[:-2]) + "/" # Go up a level
-            elif p in {".", ""}: # Ignore these
+            if p == "..":  # Go up indicator
+                new_path = "/".join(new_path.split("/")[:-2]) + "/"  # Go up a level
+            elif p in {".", ""}:  # Ignore these
                 continue
-            else: # Standard case
+            else:  # Standard case
                 new_path += p + "/"
-        return new_path if new_path[-1] != "/" or len(new_path)==1 else new_path[:-1] # Remove trailing slash, unless it's root
+        return (
+            new_path if new_path[-1] != "/" or len(new_path) == 1 else new_path[:-1]
+        )  # Remove trailing slash, unless it's root
 
     # LeetCode #72: Edit Distance
     # LeetCode #73: Set Matrix Zeroes
@@ -1673,20 +1683,20 @@ class Solution:
         """
         base = ListNode()
         current_node = base
-        last_digit = -101 # Somehting we wouldn't see
+        last_digit = -101  # Somehting we wouldn't see
 
-        if head is None: #Before we get a bunch of errors, check edge cases
+        if head is None:  # Before we get a bunch of errors, check edge cases
             return head
 
         while head:
-            digit = head.val if head else None # Get the next digit to check
+            digit = head.val if head else None  # Get the next digit to check
             if digit is None:
                 return base.next
-            if last_digit != digit: # New digit
-                current_node.next = ListNode(digit) # Set it
-                current_node = current_node.next # Advance it
-            head = head.next if head else None #Get the next main list item to check
-            last_digit = digit # Update the trailing value
+            if last_digit != digit:  # New digit
+                current_node.next = ListNode(digit)  # Set it
+                current_node = current_node.next  # Advance it
+            head = head.next if head else None  # Get the next main list item to check
+            last_digit = digit  # Update the trailing value
 
         return base.next
 
@@ -1728,7 +1738,6 @@ class SolutionButCheeky:
             return 1
         return x**n  # Easy peasy
 
-
     def search_alt(self, nums: list[int], target: int) -> int:
         """LeetCode #33: Search in Rotated Sorted Array.
 
@@ -1737,6 +1746,7 @@ class SolutionButCheeky:
         return (
             nums.index(target) if target in nums else -1
         )  # Okay, so this is maybe overly simple for the intended application, and doesn't meet the complexity requirements (but does pass the submission tests)
+
 
 class SolutionButAlreadyUsedTheName:
     """Same as Solution, but separated for the already used names."""

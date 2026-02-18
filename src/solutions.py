@@ -1655,6 +1655,31 @@ class Solution:
         return new_path if new_path[-1] != "/" or len(new_path)==1 else new_path[:-1] # Remove trailing slash, unless it's root
 
     # LeetCode #72: Edit Distance
+
+    def setZeroes(self, matrix: list[list[int]]):
+        """LeetCode #73: Set Matrix Zeroes.
+
+        Given an m x n matrix, if an element is 0, set its entire row and column to 0's, then return the matrix.
+        You must do it in place.
+        """
+        # Get the columns & rows to zero in the first pass. Don't do any updates yet, just get the indexes
+        # Iterate through the matrix & zero anything in either
+        columns_to_zero = []
+        rows_to_zero = []
+
+        for row in range(len(matrix)):
+            for column in range(len(matrix[row])):
+                if matrix[row][column] == 0: # If the element is 0
+                    columns_to_zero.append(column) # Add the column
+                    rows_to_zero.append(row) # Add the row
+
+        for column in columns_to_zero: # Iterate through the columns that need to be zeroed
+            for row in range(len(matrix)): # Iterate through the rows
+                matrix[row][column] = 0 # Set the element to 0
+        for row in rows_to_zero: # Iterate through the rows that need to be zeroed
+            for column in range(len(matrix[row])): # Iterate through the columns
+                matrix[row][column] = 0 # Set the element to 0
+
     # LeetCode #73: Set Matrix Zeroes
     # LeetCode #74: Search a 2D Matrix
     # LeetCode #75: Sort Colors

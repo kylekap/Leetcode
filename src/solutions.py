@@ -1680,8 +1680,16 @@ class Solution:
             for column in range(len(matrix[row])): # Iterate through the columns
                 matrix[row][column] = 0 # Set the element to 0
 
-    # LeetCode #73: Set Matrix Zeroes
-    # LeetCode #74: Search a 2D Matrix
+    def searchMatrix(self, matrix: list[list[int]], target: int) -> bool:
+        """LeetCode #74: Search a 2D Matrix.
+
+        Write an efficient algorithm that searches for a value target in an m x n integer matrix matrix. This matrix has the following properties:
+        Integers in each row are sorted from left to right.
+        The first integer of each row is greater than the last integer of the previous row.
+        """
+        # Iterate through the matrix rows & check if the target is in the row using our normal binary search. If it is, return True
+        return any(util.binary_search(row, target) != -1 for row in matrix)
+
     # LeetCode #75: Sort Colors
     # LeetCode #76: Minimum Window Substring
     # LeetCode #77: Combinations

@@ -4,6 +4,7 @@ import fnmatch
 import heapq
 import itertools
 import re
+from collections import Counter
 
 import util
 from util import ListNode
@@ -1691,7 +1692,43 @@ class Solution:
         return any(util.binary_search(row, target) != -1 for row in matrix)
 
     # LeetCode #75: Sort Colors
-    # LeetCode #76: Minimum Window Substring
+
+    def minWindow(self, s: str, t: str) -> str: # TODO(#12): Optimize. This is too slow
+        """LeetCode #76: Minimum Window Substring.
+
+        Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+        The testcases will be generated such that the answer is unique.
+        A substring is a contiguous sequence of characters within the string.
+        """
+        # Sliding window. I really wanted to keep remaking Counter here but it was too slow.
+        left = 0 # Left pointer
+        right = len(t) # Right pointer
+        min_size = len(s) # Minimum size is the length of the string
+        min_size_at = 0 # The index of the minimum size
+        target_frequency = Counter(t) # Target frequency
+        window_frequency = Counter() # Window frequency
+
+        if (target_frequency - Counter(s)): # If the target frequency is not in the string
+            return ""
+        if t in s: # If the target is in the string
+            return t
+
+
+        for right in range(len(s)): # Iterate through the string
+            window_frequency[s[right]]+=1 # Add the character
+            while not (target_frequency-window_frequency): # Counter subtraction - returns True if the target frequency is in the window frequency.
+                if right-left < min_size: # If the window is smaller than the min size
+                    min_size = right-left+1 # Update the min size
+                    min_size_at = left # Update the min size index
+
+                # Kept having issues of 0 size items included
+                if window_frequency[s[left]] == 1: # If the character is only in the window once
+                    del window_frequency[s[left]] # Remove it
+                else: # If the character is in the window more than once
+                    window_frequency[s[left]] -=1 # Subtract one
+                left+=1 # Move the left pointer forward
+        return s[min_size_at:min_size_at+min_size] # Return the substring
+
     # LeetCode #77: Combinations
     # LeetCode #78: Subsets
     # LeetCode #79: Word Search
@@ -1770,6 +1807,16 @@ class SolutionButCheeky:
         return (
             nums.index(target) if target in nums else -1
         )  # Okay, so this is maybe overly simple for the intended application, and doesn't meet the complexity requirements (but does pass the submission tests)
+
+    def sortColors(self, nums: list[int]) -> None:
+        """LeetCode #75: Sort Colors.
+
+        Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+        """
+        # Make a dict of how many of each & then just build what would be the sorted list
+        di = Counter(nums)
+        nums[:] = [0]*di.get(0,0)+[1]*di.get(1,0)+[2]*di.get(2,0) # Easy peasy, lemon squeezy.
+
 
 class SolutionButAlreadyUsedTheName:
     """Same as Solution, but separated for the already used names."""

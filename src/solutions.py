@@ -1732,18 +1732,67 @@ class Solution:
     # LeetCode #77: Combinations
     # LeetCode #78: Subsets
     # LeetCode #79: Word Search
+
     # LeetCode #80: Remove Duplicates from Sorted Array II
+    def removeDuplicates80(self, nums: list[int]) -> int:
+        """LeetCode #80: Remove Duplicates from Sorted Array.
+
+        Given a sorted array nums, remove the duplicates in-place such that each element appears at most twice and returns the new length.
+        """
+        # Starting at the third element (because the first two are guaranteed to be okay), check if the current element is the same as the previous two.
+        # If it is NOT, put it in the array at the kth position.
+        l_nums = len(nums)
+
+        if l_nums <= 2:  # If the length is less than or equal to 2, we don't need to do anything. # noqa: PLR2004
+            return l_nums
+
+        k = 2 # Keep track of the new length, starting at 2 (because the first two are guaranteed to be okay)
+
+        for i in range(2, l_nums): # Iterate through the array
+            if nums[i] != nums[k-2]: # If the current element is different from the previous two
+                nums[k] = nums[i] # Replace the kth element with the new element
+                k+=1 # Increment the new length
+        return k # Return the new length
+
     # LeetCode #81: Search in Rotated Sorted Array II
-    # LeetCode #82: Remove Duplicates from Sorted List
 
     def deleteDuplicates(self, head: [ListNode] | None) -> [ListNode] | None:
+        """LeetCode #82: Remove Duplicates from Sorted List.
+
+        Given the head of a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list. Return the linked list sorted as well.
+        """
+        # Iterate through the list and keep track of the last skipped value.
+        # Since it's sorted & we don't want duplicates, if the value is the same as the next value, we skip it & toss it onto "last_skipped"
+        base = ListNode()
+        current_node = base
+
+        if head is None or head.next is None: #Before we get a bunch of errors, check edge cases
+            return head
+
+        last_skipped = None # Something we wouldn't see
+        follow = head.val # Get the first digit
+        lead = head.next.val if head.next else None # Get the second digit
+
+        while head:
+            if follow not in (lead, last_skipped): # If the digit is unique
+                current_node.next = ListNode(follow) # Set it
+                current_node = current_node.next # Advance it
+            else:
+                last_skipped = follow # Set the last skipped value
+            head = head.next if head is not None else None
+            follow = head.val if head is not None else None
+            lead = head.next.val if follow is not None and head.next else None
+
+        return base.next
+
+    def deleteDuplicates83(self, head: [ListNode] | None) -> [ListNode] | None:
         """LeetCode #83: Remove Duplicates from Sorted List.
 
         Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
         """
         base = ListNode()
         current_node = base
-        last_digit = -101 # Somehting we wouldn't see
+        last_digit = -101 # Something we wouldn't see
 
         if head is None: #Before we get a bunch of errors, check edge cases
             return head

@@ -1731,7 +1731,46 @@ class Solution:
 
     # LeetCode #77: Combinations
     # LeetCode #78: Subsets
-    # LeetCode #79: Word Search
+
+    def exist(self, board: list[list[str]], word: str) -> bool:
+        # Backgracking function
+        def backtrack(row, col, word_index):
+            if word_index == len(word):
+                return True
+            if row not in range(self.max_rows) or \
+                col not in range(self.max_cols) or \
+                self.board[row][col] != word[word_index]:
+                return False
+
+            temp = self.board[row][col]
+            self.board[row][col] = "."
+
+            found = (backtrack(row, col-1, word_index+1) or \
+                    backtrack(row, col+1, word_index+1) or \
+                    backtrack(row-1, col, word_index+1) or \
+                    backtrack(row+1, col, word_index+1))
+            self.board[row][col] = temp
+            return found
+
+        # get your variables set up
+        self.board = board
+        self.max_rows = len(self.board)
+        self.max_cols = len(self.board[0])
+
+        # So we can optimize the search a little - if you don't have the right number of letters? Done.
+        board_count = Counter(ch for row in self.board for ch in row)
+        if any(board_count[ch] < Counter(word)[ch] for ch in set(word)):
+            return False
+
+        # Also, if the last character has fewer appearances, it will be faster to search in reverse.
+        word = word[::-1] if board_count[word[0]] > board_count[word[-1]] else word
+
+        # Loop through the board
+        for start_row in range(self.max_rows):
+            for start_col in range(self.max_cols):
+                if backtrack(start_row, start_col, 0):
+                    return True
+        return False
 
     # LeetCode #80: Remove Duplicates from Sorted Array II
     def removeDuplicates80(self, nums: list[int]) -> int:
@@ -1809,6 +1848,56 @@ class Solution:
 
         return base.next
 
+    # LeetCode #84: Largest Rectangle in Histogram
+    # LeetCode #85: Maximal Rectangle
+
+    def partition(self, head: [ListNode] | None, x: int) -> [ListNode] | None:
+        """LeetCode #86: Partition List.
+
+        Given the head of a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+        You should preserve the original relative order of the nodes in each of the two partitions.
+        """
+        # Create a base and an end, and loop through the linked list, adding to the base if the value is less than x, and to the end if the value is greater than or equal to x
+        # Combine at the end, like we did for the rotational linked list problem above.
+        base = ListNode() # Create a base
+        end = ListNode() # Create an end, covering all values >= x
+        base_node = base  # Start at the base
+        end_node = end  # Start at the end
+
+        if head is None:
+            return head
+
+        while head: # Loop through the linked list
+            digit = head.val if head else None
+            if digit < x: # If the digit is less than x
+                base_node.next = ListNode(digit) # Add it to the base
+                base_node = base_node.next
+            else: # If the digit is greater than or equal to x
+                end_node.next = ListNode(digit) # Add it to the end
+                end_node = end_node.next
+            head = head.next if head else None # Get the next value
+
+        ans = base.next # Get the answer
+        if ans is None: # If the answer is empty
+            ans = end.next # Set the answer to the end only
+        else:
+            base_node.next = end.next # Set the base to the end
+        return ans # Return
+
+    # LeetCode #87: Scramble String
+    # LeetCode #88: Merge Sorted Array
+    # LeetCode #89: Gray Code
+    # LeetCode #90: Subsets II
+    # LeetCode #91: Decode Ways
+    # LeetCode #92: Reverse Linked List II
+    # LeetCode #93: Restore IP Addresses
+    # LeetCode #94: Binary Tree Inorder Traversal
+    # LeetCode #95: Unique Binary Search Trees II
+    # LeetCode #96: Unique Binary Search Trees
+    # LeetCode #97: Interleaving String
+    # LeetCode #98: Validate Binary Search Tree
+    # LeetCode #99: Recover Binary Search Tree
+    # LeetCode #100: Same Tree
 
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
@@ -1847,7 +1936,6 @@ class SolutionButCheeky:
             return 1
         return x**n  # Easy peasy
 
-
     def search_alt(self, nums: list[int], target: int) -> int:
         """LeetCode #33: Search in Rotated Sorted Array.
 
@@ -1865,6 +1953,24 @@ class SolutionButCheeky:
         # Make a dict of how many of each & then just build what would be the sorted list
         di = Counter(nums)
         nums[:] = [0]*di.get(0,0)+[1]*di.get(1,0)+[2]*di.get(2,0) # Easy peasy, lemon squeezy.
+
+    def combine(self, n: int, k: int) -> list[list[int]]: # TODO(#13): Try without itertools
+        """LeetCode #77: Combinations.
+
+        Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+        """
+        return list(itertools.combinations(range(1,n+1), k))  # Easy peasy when you don't care about intention
+
+    def subsets(self, nums: list[int]) -> list[list[int]]: # TODO(#14): Try without itertools
+        """LeetCode #78: Subsets.
+
+        Given an integer array nums of unique elements, return all possible subsets (the power set).
+        The solution set must not contain duplicate subsets. Return the solution in any order.
+        """
+        li = []
+        for i in range(len(nums)+1):
+            li += list(itertools.combinations(nums, i))
+        return li # Easy peasy when you don't care about intention
 
 
 class SolutionButAlreadyUsedTheName:

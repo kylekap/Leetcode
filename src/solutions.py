@@ -1939,7 +1939,24 @@ class Solution:
         return starter
 
     def getRow(self, rowIndex: int) -> list[int]:
+        """LeetCode #119: Pascal's Triangle II.
+
+        Given an integer rowIndex, return the rowIndexth row of the Pascal's triangle.
+        In Pascal's triangle, each number is the sum of the two numbers directly above it.
+        """
         return self.generate(rowIndex+1)[-1]
+
+    def minimumTotal(self, triangle: list[list[int]]) -> int:
+        """LeetCode #120: Triangle.
+
+        Given a triangle array, return the minimum path sum from top to bottom.
+        For each step, you may move to an adjacent number of the row below. More formally, if you are on index i on the current row, you may move to either index i or index i + 1 on the next row.
+        """
+        # Bottom up, extremely close to Project Euler #18
+        for row_num in range(len(triangle) - 2, -1, -1):  # -2 because -1 would be last, need to start 1 higher
+            for col_num in range(len(triangle[row_num])): # Iterate through columns
+                triangle[row_num][col_num] += min(triangle[row_num + 1][col_num], triangle[row_num + 1][col_num + 1]) # Add the min of the two numbers below
+        return triangle[0][0] # Return the peak
 
 
 class SolutionButCheeky:

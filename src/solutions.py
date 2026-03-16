@@ -92,7 +92,7 @@ class Solution:
                     longest_palindrome = s[i:j]
         return longest_palindrome
 
-    def convert(self, s: str, numRows: int) -> str:  # noqa: N803
+    def convert(self, s: str, numRows: int) -> str:
         """LeetCode #6: ZigZag Conversion.
 
         The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
@@ -1329,7 +1329,7 @@ class Solution:
                 ans.append(ea)  # Add the new interval if no overlap
         return ans
 
-    def insert(self, intervals: list[list[int]], newInterval: list[int]) -> list[list[int]]:  # noqa: N803
+    def insert(self, intervals: list[list[int]], newInterval: list[int]) -> list[list[int]]:
         """LeetCode #57: Insert Interval.
 
         Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
@@ -1424,7 +1424,7 @@ class Solution:
         return int(util.binomial_coefficient(m-1+n-1,n-1))
 
 
-    def uniquePathsWithObstacles(self, obstacleGrid: list[list[int]]) -> int:  # noqa: N803
+    def uniquePathsWithObstacles(self, obstacleGrid: list[list[int]]) -> int:
         """LeetCode #63: Unique Paths II.
 
         You are given an m x n integer array grid.
@@ -1576,7 +1576,7 @@ class Solution:
             ans = "1" + ans
         return ans
 
-    def fullJustify(self, words: list[str], maxWidth: int) -> list[str]:  # noqa: N803
+    def fullJustify(self, words: list[str], maxWidth: int) -> list[str]:
         """LeetCode #68: Text Justification.
 
         Given an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.
@@ -1898,6 +1898,49 @@ class Solution:
     # LeetCode #98: Validate Binary Search Tree
     # LeetCode #99: Recover Binary Search Tree
     # LeetCode #100: Same Tree
+    # LeetCode #101: Symmetric Tree
+    # LeetCode #102: Binary Tree Level Order Traversal
+    # LeetCode #103: Binary Tree Zigzag Level Order Traversal
+    # LeetCode #104: Maximum Depth of Binary Tree
+    # LeetCode #105: Construct Binary Tree from Preorder and Inorder Traversal
+    # LeetCode #106: Construct Binary Tree from Inorder and Postorder Traversal
+    # LeetCode #107: Binary Tree Level Order Traversal II
+    # LeetCode #108: Convert Sorted Array to Binary Search Tree
+    # LeetCode #109: Convert Sorted List to Binary Search Tree
+    # LeetCode #110: Balanced Binary Tree
+    # LeetCode #111: Minimum Depth of Binary Tree
+    # LeetCode #112: Path Sum
+    # LeetCode #113: Path Sum II
+    # LeetCode #114: Flatten Binary Tree to Linked List
+    # LeetCode #115: Distinct Subsequences
+    # LeetCode #116: Populating Next Right Pointers in Each Node
+    # LeetCode #117: Populating Next Right Pointers in Each Node II
+
+    def generate(self, numRows: int) -> list[list[int]]:
+        """LeetCode #118: Pascal's Triangle.
+
+        Given an integer numRows, return the first numRows of Pascal's triangle.
+        In Pascal's triangle, each number is the sum of the two numbers directly above it.
+        """
+        starter = [[1],[1,1]] # Create the first two rows
+        if numRows == 1: # Edge case
+            return [starter[0]]
+        if numRows == 2: # Edge case  # noqa: PLR2004
+            return starter
+
+        for row in range(numRows): # Loop through the rows
+            if row <= 1: # Edge case, already done
+                continue
+            starter.append([1]+[0]*(row-1)+[1]) # Add a new row, with a 1 at the start and a 1 at the end
+            for ix in range(len(starter[row])): # Loop through the columns
+                if starter[row][ix] == 1: # If already done, skip
+                    continue
+                starter[row][ix] = starter[row-1][ix-1]+starter[row-1][ix] # Add the two numbers above
+        return starter
+
+    def getRow(self, rowIndex: int) -> list[int]:
+        return self.generate(rowIndex+1)[-1]
+
 
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""

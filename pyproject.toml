@@ -72,5 +72,6 @@ ignore = [
     "S101", # Assert is only used in the testing modules
     "T201", # I'm gunna print sometimes, you gotta live with it
     "N802", # Leetcode is making me by the way they name their problems. I don't like it.
+    "N803", # leetcode is making me by the way they name their problems. I don't like it.
     "FIX002", # Reminders for what to go back to
     ]

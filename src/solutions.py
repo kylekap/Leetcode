@@ -1958,6 +1958,73 @@ class Solution:
                 triangle[row_num][col_num] += min(triangle[row_num + 1][col_num], triangle[row_num + 1][col_num + 1]) # Add the min of the two numbers below
         return triangle[0][0] # Return the peak
 
+    # LeetCode #121: Best Time to Buy and Sell Stock
+    # LeetCode #122: Best Time to Buy and Sell Stock II
+    # LeetCode #123: Best Time to Buy and Sell Stock III
+    # LeetCode #124: Binary Tree Maximum Path Sum
+    # LeetCode #125: Valid Palindrome - See SolutionButAlreadyUsedTheName
+    # LeetCode #126: Word Ladder II
+    # LeetCode #127: Word Ladder
+    # LeetCode #128: Longest Consecutive Sequence
+    # LeetCode #129: Sum Root to Leaf Numbers
+    # LeetCode #130: Surrounded Regions
+    # LeetCode #131: Palindrome Partitioning
+    # LeetCode #132: Palindrome Partitioning II
+    # LeetCode #133: Clone Graph
+    # LeetCode #134: Gas Station
+    # LeetCode #135: Candy
+    # LeetCode #136: Single Number
+    # LeetCode #137: Single Number II
+    # LeetCode #138: Copy List with Random Pointer
+    # LeetCode #139: Word Break
+    # LeetCode #140: Word Break II
+    # LeetCode #141: Linked List Cycle
+    # LeetCode #142: Linked List Cycle II
+    # LeetCode #143: Reorder List
+    # LeetCode #144: Binary Tree Preorder Traversal
+    # LeetCode #145: Binary Tree Postorder Traversal
+    # LeetCode #146: LRU Cache
+    # LeetCode #147: Insertion Sort List
+    # LeetCode #148: Sort List
+    # LeetCode #149: Max Points on a Line
+    # LeetCode #150: Evaluate Reverse Polish Notation
+    # LeetCode #151: Reverse Words in a String
+    # LeetCode #152: Maximum Product Subarray
+    # LeetCode #153: Find Minimum in Rotated Sorted Array
+    # LeetCode #154: Find Minimum in Rotated Sorted Array II
+    # LeetCode #155: Min Stack
+    # LeetCode #156: Binary Tree Upside Down
+    # LeetCode #157: Read N Characters Given Read4
+    # LeetCode #158: Read N Characters Given Read4 II - Call multiple times
+    # LeetCode #159: Longest Substring with At Most Two Distinct Characters
+    # LeetCode #160: Intersection of Two Linked Lists
+    # LeetCode #161: One Edit Distance
+    # LeetCode #162: Find Peak Element
+    # LeetCode #163: Missing Ranges
+    # LeetCode #164: Maximum Gap
+    # LeetCode #165: Compare Version Numbers
+    # LeetCode #166: Fraction to Recurring Decimal
+    # LeetCode #167: Two Sum II - Input Array Is Sorted
+
+    def convertToTitle(self, columnNumber: int) -> str:
+        """LeetCode #168: Excel Sheet Column Title.
+
+        Given an integer columnNumber, return its corresponding column title as it appears in an Excel sheet.
+        For example:
+        A -> 1
+        B -> 2
+        C -> 3
+        ...
+        Z -> 26
+        AA -> 27
+        AB -> 28
+        ...
+        """
+        result = []
+        while columnNumber > 0:
+            columnNumber, remainder = divmod(columnNumber - 1, 26) # NOQA: N806
+            result.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[remainder])
+        return "".join(reversed(result))
 
 class SolutionButCheeky:
     """Same as Solution, but separated for the cheeky answers."""
@@ -2075,6 +2142,13 @@ class SolutionButAlreadyUsedTheName:
         _brute_force(0)  # Start at row 0
         return solution
 
+    def isPalindrome(self, s: str) -> bool:
+        """LeetCode #125: Valid Palindrome.
+
+        Given a string s, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+        """
+        new_s = "".join(char for char in s if char.isalnum()).lower()
+        return new_s == new_s[::-1]
 
 if __name__ == "__main__":
     sol = Solution()

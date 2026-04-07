@@ -1958,8 +1958,56 @@ class Solution:
                 triangle[row_num][col_num] += min(triangle[row_num + 1][col_num], triangle[row_num + 1][col_num + 1]) # Add the min of the two numbers below
         return triangle[0][0] # Return the peak
 
-    # LeetCode #121: Best Time to Buy and Sell Stock
-    # LeetCode #122: Best Time to Buy and Sell Stock II
+    def maxProfit(self, prices: list[int]) -> int:
+        """LeetCode #121: Best Time to Buy and Sell Stock.
+
+        You are given an array prices where prices[i] is the price of a given stock on the ith day.
+        You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+        Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+        """
+        # Original Method
+        """
+        def new_prices(li, val):
+            return [x for x in li if x > val]
+        max_so_far = 0
+        smallest = 100000
+        for bx, val in enumerate(prices):
+            if val < smallest:
+                smallest = val
+                updated_prices = new_prices(prices[bx:], val)
+                if updated_prices == []:
+                    continue
+                max_so_far = max(max(updated_prices)-smallest, max_so_far)
+
+        return max_so_far"""
+        # Optimized Method.
+        # We're rolling through with the smallest number so far, basically looking for the biggest AFTER it.
+        max_so_far, smallest = 0, 1E5
+        for curr in prices: # Loop through the prices
+            if curr < smallest:
+                smallest = curr
+                continue
+            max_so_far = max(max_so_far, curr-smallest)
+        return max_so_far
+
+    def maxProfit2(self, prices: list[int]) -> int:
+        """LeetCode #122: Best Time to Buy and Sell Stock II.
+
+        You are given an array prices where prices[i] is the price of a given stock on the ith day.
+        On each day, you may decide to buy and/or sell the stock. You can only hold at most one share of a stock at any time. However, you can buy it then immediately sell it on the same day.
+        Find and return the maximum profit you can achieve.
+        """
+        # Reverse the list, and check the profit at each step.
+        total_profit = 0
+        trailing = prices[-1]
+
+        for curr in prices[::-1]:
+            profit = trailing - curr
+            if curr <= trailing:
+                total_profit+= profit
+            trailing = curr
+        return total_profit
+
     # LeetCode #123: Best Time to Buy and Sell Stock III
     # LeetCode #124: Binary Tree Maximum Path Sum
     # LeetCode #125: Valid Palindrome - See SolutionButAlreadyUsedTheName

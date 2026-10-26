@@ -65,13 +65,15 @@ def nth_fibonacci(n):
     """Return the nth fibonacci number."""
     x = 1
     y = 2
-    for _ in range(n-1):
-        x, y = y, x+y
+    for _ in range(n - 1):
+        x, y = y, x + y
     return x
+
 
 def binomial_coefficient(n, k):
     """Calculate the binomial coefficient (n choose k)."""
     return calc_factorial(n) / (calc_factorial(k) * calc_factorial(n - k))
+
 
 def calc_factorial(number):
     """Calculate the factorial of a number."""
@@ -82,18 +84,21 @@ def calc_factorial(number):
         val *= ea
     return val
 
+
 def check_all(s, ch_li):
     """Check if all characters in ch_li are in s."""
     return all(char in ch_li for char in s)
 
+
 def check_any(s, ch_li):
     """Check if any character in ch_li is in s."""
     return any(char in ch_li for char in s)
+
 
 def ch_ct_str(s, ch):
     """Count the number of times a character appears in a string."""
     i = 0
     for ea in s:
         if ch == ea:
-            i+=1
+            i += 1
     return i
